@@ -1,168 +1,150 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
+import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
-import Swal from "sweetalert2";
-import { Eye, EyeOff } from "lucide-react";
-
 
 const Login = () => {
-  const [error, setError] = useState("");
+  const [expanded, setExpanded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-
   const { login, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    setError("");
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
     login(email, password)
-      .then((userCredential) => {
-        Swal.fire({
-          title: "Login successful!",
-          icon: "success",
-          draggable: true,
-        });
+      .then(() => {
+        Swal.fire("Success!", "Logged in!", "success");
         navigate("/");
       })
       .catch((err) => {
-        setError("Invalid email or password.");
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-          footer: err.message,
-        });
+        Swal.fire("Error", err.message, "error");
       });
   };
 
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then((result) => {
-        Swal.fire({
-          title: "Login successful!",
-          icon: "success",
-          draggable: true,
-        });
-        navigate("/");
-      })
-      .catch((err) => {
-        setError("Google login failed.");
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-          footer: err.message,
-        });
-      });
+  const containerVariants = {
+    collapsed: { width: 180, height: 60 },
+    expanded: { width: 360, height: "auto" },
   };
-
-
-
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center px-4 dark:bg-black">
-
-
-
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300 dark:from-gray-900 dark:to-black px-4">
       <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, type: "spring" }}
-        className="bg-white/10 dark:bg-gray-900/50 backdrop-blur-xl rounded-3xl p-10 w-full max-w-md border border-white/20 shadow-xl dark:shadow-black/50"
+        initial="collapsed"
+        animate={expanded ? "expanded" : "collapsed"}
+        variants={containerVariants}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        className="relative bg-white dark:bg-gray-900 shadow-xl rounded-xl overflow-hidden p-4 group"
+        onMouseEnter={() => setExpanded(true)}
+        onMouseLeave={() => {
+          // Collapse only on desktop (not on touch devices)
+          if (window.matchMedia("(hover: hover)").matches) {
+            setExpanded(false);
+          }
+        }}
       >
-        <div className="flex justify-between items-center mb-6">
-          <motion.h2
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-4xl font-extrabold text-blue-800 dark:text-blue-400"
-          >
-            📘 StudySync Portal
-          </motion.h2>
-        </div>
-        <p className="text-center text-sm text-blue-700 dark:text-blue-300 mb-6">
-          Connect, Learn, and Elevate Your Study Journey 🚀
-        </p>
-
-        {error && (
-          <p className="text-red-600 dark:text-red-400 text-sm text-center mb-4">
-            {error}
-          </p>
+        {/* Animated border when collapsed */}
+        {!expanded && (
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 rounded-xl blur-sm opacity-75 animate-border-spin z-0 shadow-[0_0_10px_rgba(99,102,241,0.6)] pointer-events-none"></div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block text-sm text-blue-900 dark:text-blue-300 font-semibold mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-800 text-blue-900 dark:text-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your email"
-            />
-          </div>
+        <div className="relative z-10">
+          {!expanded ? (
+            <motion.button
+              onClick={() => setExpanded(true)}
+              className="w-full h-full text-white font-bold bg-blue-700 hover:bg-blue-800 rounded-md shadow-inner tracking-wider text-lg cursor-pointer"
+              style={{
+                borderRadius: "6px",
+                boxShadow: "inset 0 2px 4px rgba(0,0,0,0.6)",
+              }}
+            >
+              Login
+            </motion.button>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <h2 className="text-lg font-bold text-blue-700 dark:text-blue-300 text-center">
+                Login to StudySync
+              </h2>
 
-          <div>
-            <label className="block text-sm text-blue-900 dark:text-blue-300 font-semibold mb-1">
-              Password
-            </label>
-            <div className="relative">
               <input
-                type={showPassword ? "text" : "password"}
-                name="password"
+                type="email"
+                name="email"
                 required
-                className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-800 text-blue-900 dark:text-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your password"
+                placeholder="Email"
+                className="w-full px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm dark:text-white focus:outline-none"
               />
+
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  required
+                  placeholder="Password"
+                  className="w-full px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm dark:text-white focus:outline-none"
+                />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300 cursor-pointer"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full cursor-pointer bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md font-semibold"
+              >
+                Login
+              </button>
+
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-blue-700 dark:text-blue-300"
+                onClick={googleLogin}
+                className="w-full border cursor-pointer border-blue-600 py-2 rounded-md text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-800"
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                
+                Login with Google
               </button>
-            </div>
-          </div>
 
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg font-bold shadow-md transition duration-300"
-          >
-            Login
-          </button>
-        </form>
+              <div className="text-center text-sm text-blue-700 dark:text-blue-300">
+                Don't have an account?{" "}
+                <Link to="/register" className="underline">
+                  Register
+                </Link>
+              </div>
 
-       <button
-          onClick={handleGoogleLogin}
-          className="flex items-center mt-3 justify-center w-full border border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-md py-2 space-x-3 transition focus:ring-4 focus:ring-blue-400"
-        >
-          <svg
-            className="h-5 w-5"
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M21.35 11.1H12v2.8h5.25a4.5 4.5 0 01-4.35 3 4.74 4.74 0 01-4.75-4.75 4.75 4.75 0 014.75-4.75c1.3 0 2.35.48 3.2 1.26l2.24-2.24a7.92 7.92 0 00-5.44-2.26A7.88 7.88 0 004 12a7.87 7.87 0 007.88 7.88 8.03 8.03 0 007.54-5.5z" />
-          </svg>
-          <span className="font-semibold text-blue-700 dark:text-blue-400">
-            Continue with Google
-          </span>
-        </button>
-
-        <p className="mt-6 text-center text-sm text-blue-900 dark:text-blue-300">
-          Don’t have an account?{' '}
-          <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Register here
-          </Link>
-        </p>
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setExpanded(false)}
+                  className="text-sm cursor-pointer text-blue-600 dark:text-blue-400 underline"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </motion.div>
+
+      {/* Custom CSS for animated border */}
+      <style>
+        {`
+          @keyframes borderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .animate-border-spin {
+            animation: borderSpin 3s linear infinite;
+            background-size: 300% 300%;
+            background-position: 0% 50%;
+          }
+        `}
+      </style>
     </div>
   );
 };
