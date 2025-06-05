@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef, use } from "react";
-import { FaUser } from "react-icons/fa";
+import { FaClipboardList, FaPlus, FaUser } from "react-icons/fa";
 import { AuthContext } from "../context/AuthProvider";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const ProfileDropdown = ({ user }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-
 
   //  useEffect to handle outside click
   useEffect(() => {
@@ -24,41 +23,41 @@ const ProfileDropdown = ({ user }) => {
   }, []);
 
   const navigate = useNavigate();
-    const { logout } = use(AuthContext);
-    const handleLogout = () => {
-      logout()
-        .then(() => {
-          // console.log("User signed out successfully.");
-          Swal.fire({
-            title: "Signed out successfully.",
-            icon: "success",
-            draggable: true,
-          });
-          // // Optional: redirect to login or homepage
-          navigate("/");
-        })
-        .catch((error) => {
-          // console.error("Logout error:", error.message);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-            footer: error.message,
-          });
+  const { logout } = use(AuthContext);
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        // console.log("User signed out successfully.");
+        Swal.fire({
+          title: "Signed out successfully.",
+          icon: "success",
+          draggable: true,
         });
-    };
+        // // Optional: redirect to login or homepage
+        navigate("/");
+      })
+      .catch((error) => {
+        // console.error("Logout error:", error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          footer: error.message,
+        });
+      });
+  };
 
   return (
     user && (
-      <div ref={dropdownRef} className="relative">
-  {/* Avatar Click */}
+     <div ref={dropdownRef} className="relative">
+  {/* Avatar Button */}
   <div
     onClick={() => setOpen(!open)}
-    className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center cursor-pointer border-2 border-emerald-300 hover:border-emerald-200 transition-all dark:border-emerald-700 dark:hover:border-emerald-500"
+    className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center cursor-pointer border-2 border-white dark:border-emerald-500 hover:scale-105 transition-transform duration-200 shadow-md"
   >
     {user.photoURL ? (
       <img
-        className="rounded-full h-9 w-10 object-cover"
+        className="rounded-full h-9 w-9 object-cover"
         src={user.photoURL}
         alt="Profile"
       />
@@ -69,19 +68,53 @@ const ProfileDropdown = ({ user }) => {
 
   {/* Dropdown Panel */}
   <div
-    className={`absolute right-0 mt-3 w-56 bg-white rounded-lg shadow-xl py-2 z-50 border border-green-100 transition-all duration-300 transform dark:bg-gray-800 dark:border-green-700 dark:shadow-black ${
+    className={`absolute right-0 mt-4 w-64 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-xl shadow-xl border border-emerald-100 dark:border-emerald-800 z-50 transform transition-all duration-300 ease-in-out ${
       open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
     }`}
   >
-    <div className="px-4 py-3 border-b border-emerald-50 dark:border-emerald-700">
-      <p className="text-sm text-gray-800 font-medium uppercase dark:text-gray-200">
-        {user.displayName}
-      </p>
-      <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+    {/* User Info */}
+    <div className="px-5 py-4 border-b border-emerald-100 dark:border-emerald-700">
+      <p className="text-sm font-semibold text-gray-800 dark:text-white truncate">{user.displayName}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
     </div>
+
+    {/* Nav Links */}
+    <div className="px-4 py-4 space-y-3">
+      <NavLink
+        to="/create"
+        className={({ isActive }) =>
+          `flex items-center gap-3 px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200
+          ${
+            isActive
+              ? "bg-emerald-500 text-white shadow"
+              : "text-gray-700 dark:text-gray-200 hover:bg-emerald-100 dark:hover:bg-emerald-800 hover:text-emerald-900 dark:hover:text-white"
+          }`
+        }
+      >
+        <FaPlus className="text-base" />
+        Create Assignment
+      </NavLink>
+
+      <NavLink
+        to="/submissions"
+        className={({ isActive }) =>
+          `flex items-center gap-3 px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200
+          ${
+            isActive
+              ? "bg-emerald-500 text-white shadow"
+              : "text-gray-700 dark:text-gray-200 hover:bg-emerald-100 dark:hover:bg-emerald-800 hover:text-emerald-900 dark:hover:text-white"
+          }`
+        }
+      >
+        <FaClipboardList className="text-base" />
+        My Submissions
+      </NavLink>
+    </div>
+
+    {/* Logout Button */}
     <button
       onClick={handleLogout}
-      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 transition-colors dark:text-gray-300 dark:hover:bg-emerald-700"
+      className="w-full text-left px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900 rounded-b-xl transition-colors duration-200"
     >
       Logout
     </button>
