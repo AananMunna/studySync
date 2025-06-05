@@ -11,6 +11,7 @@ import TipDetails from "./../pages/TipDetails";
 import PrivateRoute from "../components/PrivateRoute";
 import UpdateTip from "../pages/UpdateTip";
 import NotFound from "./../pages/NotFound";
+import CreateAssignment from './../pages/CreateAssignment';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,14 @@ export const router = createBrowserRouter([
       { index: true, Component: App },
       { path: "ExploreGardeners", Component: ExploreGardeners },
       { path: "BrowseTips", Component: BrowseTips },
+      {
+        path: "create",
+        element: (
+          <PrivateRoute>
+            <CreateAssignment></CreateAssignment>
+          </PrivateRoute>
+        ),
+      },
       {
         path: "ShareTip",
         element: (
