@@ -11,6 +11,7 @@ import {
   FaUserAlt,
   FaPlus,
   FaClipboardList,
+  FaHourglassHalf 
 } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
@@ -30,7 +31,7 @@ export default function Navbar() {
     { to: "/assignments", label: "Assignments", icon: <FaTasks /> },
     { to: "/submissions", label: "My Submissions", icon: <FaClipboardList /> },
     { to: "/create", label: "Create", icon: <FaPlus /> },
-    { to: "/profile", label: "Profile", icon: <FaUserAlt /> },
+    { to: "/pending", label: "Pending", icon: <FaHourglassHalf  /> },
   ];
 
   useEffect(() => {
