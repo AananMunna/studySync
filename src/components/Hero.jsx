@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import Lottie from "lottie-react";
-import studyAnimation from "../assets/study.json";
+import studyAnimation from "../assets/study2.json";
 
 export default function HeroSection() {
   return (
