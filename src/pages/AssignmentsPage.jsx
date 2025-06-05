@@ -102,7 +102,8 @@ const AssignmentsPage = () => {
               </p>
 
               <div className="flex justify-between items-center mt-4 space-x-2">
-                <Link to={`/assignment/view/${assignment.id}`}>
+                <Link to={`/AssignmentDetails`}>
+                {/* <Link to={`/assignment/view/${assignment.id}`}> */}
                   <button className="p-2 bg-green-100 dark:bg-green-900 rounded-lg hover:bg-green-200 dark:hover:bg-green-700 transition">
                     <FiEye className="text-green-600 dark:text-green-300" />
                   </button>

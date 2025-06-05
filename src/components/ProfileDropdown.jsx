@@ -114,7 +114,7 @@ const ProfileDropdown = ({ user }) => {
     {/* Logout Button */}
     <button
       onClick={handleLogout}
-      className="w-full text-left px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900 rounded-b-xl transition-colors duration-200"
+      className="w-full text-left cursor-pointer px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900 rounded-b-xl transition-colors duration-200"
     >
       Logout
     </button>
