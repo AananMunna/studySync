@@ -18,6 +18,8 @@ import { AuthContext } from "../context/AuthProvider";
 import { ThemeContext } from "../context/ThemeContext";
 import ProfileDropdown from "./ProfileDropdown";
 import { motion } from "framer-motion";
+import { useRef } from "react";
+
 
 export default function Navbar() {
   const { darkMode, setDarkMode } = useContext(ThemeContext);
@@ -25,6 +27,9 @@ export default function Navbar() {
   const [scrollRotation, setScrollRotation] = useState(0);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const menuRef = useRef(null);
+const buttonRef = useRef(null);
+
 
   const navLinks = [
     { to: "/", label: "Home", icon: <FaHome /> },
@@ -43,6 +48,27 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+  if (!isMenuOpen) return; // only listen when menu is open
+
+  function handleClickOutside(event) {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) && // click outside menu
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target) // and outside toggle button
+    ) {
+      setIsMenuOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isMenuOpen]);
+
 
   return (
     <motion.nav
@@ -146,6 +172,7 @@ export default function Navbar() {
           )}
 
           <button
+           ref={buttonRef}
             className="lg:hidden p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
@@ -167,7 +194,9 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="lg:hidden px-4 pb-4 space-y-2">
+        <div
+        ref={menuRef}
+        className="lg:hidden px-4 pb-4 space-y-2">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
