@@ -17,6 +17,9 @@ const CreateAssignment = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const data = {title,desc,marks,thumbnail,difficulty,dueDate}
+    console.log(data);
+
     // Validation
     if (!title || !desc || !marks || !thumbnail || !difficulty || !dueDate) {
       setError("⚠️ Please fill in all fields.");
