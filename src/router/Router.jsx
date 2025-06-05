@@ -7,6 +7,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import NotFound from "./../pages/NotFound";
 import CreateAssignment from './../pages/CreateAssignment';
 import AssignmentsPage from "../pages/AssignmentsPage";
+import MySubmittedAssignments from "../pages/MySubmittedAssignments";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <CreateAssignment></CreateAssignment>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "submissions",
+        element: (
+          <PrivateRoute>
+            <MySubmittedAssignments></MySubmittedAssignments>
           </PrivateRoute>
         ),
       },

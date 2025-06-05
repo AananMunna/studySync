@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 
+// Dummy assignments
 const assignments = [
   {
     id: 1,
@@ -22,27 +23,72 @@ const assignments = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      damping: 20,
+      stiffness: 100,
+    },
+  },
+};
+
 const AssignmentsPage = () => {
-  const currentUserEmail = "creator@example.com"; // use actual logged-in user email
+  const currentUserEmail = "creator@example.com";
 
   return (
-    <div className="px-4 md:px-12 py-10 min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-green-900 dark:text-green-300">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="px-4 md:px-12 py-10 min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800"
+    >
+      <motion.h2
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="text-3xl md:text-4xl font-bold text-center mb-10 text-green-900 dark:text-green-300"
+      >
         📚 Study Assignments
-      </h2>
+      </motion.h2>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {assignments.map((assignment) => (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {assignments.map((assignment, index) => (
           <motion.div
             key={assignment.id}
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 200 }}
+            variants={cardVariants}
+            whileHover={{
+              scale: 1.04,
+              boxShadow: "0px 10px 25px rgba(0,0,0,0.1)",
+            }}
+            transition={{ type: "spring", stiffness: 300 }}
             className="rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800"
           >
-            <img
+            <motion.img
               src={assignment.thumbnail}
               alt={assignment.title}
               className="h-44 w-full object-cover"
+              initial={{ scale: 1.1 }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.5 }}
             />
             <div className="p-5">
               <h3 className="text-xl font-semibold text-green-800 dark:text-green-200">
@@ -90,14 +136,13 @@ const AssignmentsPage = () => {
             </div>
           </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
 const handleDelete = (id) => {
-  // 🔐 Future scope: show confirmation modal and then delete from DB
-  console.log("Trying to delete assignment ID:", id);
+  console.log("🗑️ Trying to delete assignment ID:", id);
 };
 
 export default AssignmentsPage;
