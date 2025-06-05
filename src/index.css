@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/navigation';
+@import 'animate.css';
+
+
+/* In your global CSS or inside tailwind.config.js safelist */
+.form-input {
+  @apply w-full px-4 py-2 rounded-lg border border-[#ccd6c5] bg-[#f9fbf7] text-[#3a4a2c] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#89a77e];
+}
+
+.active{
+  background: #166534;
+  color: white;
+  margin-bottom: 4px;
+}
