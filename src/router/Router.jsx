@@ -6,6 +6,7 @@ import Register from "./../pages/Register";
 import PrivateRoute from "../components/PrivateRoute";
 import NotFound from "./../pages/NotFound";
 import CreateAssignment from './../pages/CreateAssignment';
+import AssignmentsPage from "../pages/AssignmentsPage";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,12 @@ export const router = createBrowserRouter([
     Component: Layout,
     children: [
       { index: true, Component: App },
+      {
+        path: "assignments",
+        element: (
+            <AssignmentsPage></AssignmentsPage>
+        ),
+      },
       {
         path: "create",
         element: (

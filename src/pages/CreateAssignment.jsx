@@ -62,10 +62,10 @@ const CreateAssignment = () => {
       >
         {/* Back to Dashboard */}
         <Link
-          to="/dashboard"
+          to="/"
           className="absolute left-4 top-4 text-green-600 dark:text-green-300 hover:underline text-sm"
         >
-          ← Back to Dashboard
+          ← Back to Home
         </Link>
 
         <h2 className="text-3xl font-bold text-center text-green-600 dark:text-green-300 mb-6">
