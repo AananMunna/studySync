@@ -16,3 +16,28 @@
   color: white;
   margin-bottom: 4px;
 }
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(160px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(160px) rotate(-360deg);
+  }
+}
+
+.orbit-slow {
+  animation: orbit 16s linear infinite;
+}
+
+.orbit-medium {
+  animation: orbit 22s linear infinite;
+}
+
+.orbit-slower {
+  animation: orbit 30s linear infinite;
+}
+
+.group-hover\:paused-orbit:hover {
+  animation-play-state: paused !important;
+}

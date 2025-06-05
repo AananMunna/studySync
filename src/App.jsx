@@ -3,6 +3,7 @@ import FAQ from "./components/FAQ";
 import FeaturesSection from "./components/FeaturesSection";
 import Hero from "./components/Hero";
 import HowItWorks from "./components/HowItWorks";
+import RecentAssignments from "./components/RecentAssignments";
 import ScrollToTop from "./components/ScrollToTop";
 import TopContributors from "./components/TopContributors";
 
@@ -12,8 +13,9 @@ function App() {
       <ScrollToTop />
       <Hero></Hero>
       <HowItWorks></HowItWorks>
-      <FeaturesSection></FeaturesSection>
       <TopContributors></TopContributors>
+      <FeaturesSection></FeaturesSection>
+      <RecentAssignments></RecentAssignments>
       <FAQ></FAQ>
     </div>
   );
