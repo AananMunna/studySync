@@ -36,7 +36,7 @@ const TopContributors = () => {
 
   return (
     <section className="relative py-20 bg-gradient-to-tr from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-visible">
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 px-4">
         <motion.h2
           className="text-4xl font-bold dark:text-white text-gray-900"
           initial={{ opacity: 0, y: 40 }}
@@ -45,48 +45,13 @@ const TopContributors = () => {
         >
           🌟 Top Contributors
         </motion.h2>
-        <p className="text-gray-600 dark:text-gray-300 mt-2">
+        <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
           Not just stars — they’re StudySync's constellations!
         </p>
       </div>
 
-      <div className="relative w-full h-[400px] sm:h-[500px] mx-auto flex items-center justify-center overflow-visible">
-        {/* Orbiting Avatars */}
-        {orbiters.map((c, i) => {
-          const speeds = ["orbit-slow", "orbit-medium", "orbit-slower"];
-          const radius = 160 + i * 10;
-
-          return (
-            <div
-              key={i}
-              className={`absolute group`}
-              style={{ width: radius * 2, height: radius * 2 }}
-            >
-              <div
-                className={`absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 ${speeds[i % speeds.length]} group-hover:paused-orbit`}
-              >
-                <div
-                  className="transform translate-x-[160px] flex flex-col items-center text-center cursor-pointer"
-                  data-tooltip-id={`tooltip-${i}`}
-                  data-tooltip-content={`${c.name} — ${c.role} — ${c.points} pts`}
-                >
-                  <img
-                    src={c.avatar}
-                    alt={c.name}
-                    className="w-16 h-16 rounded-full ring-2 ring-indigo-400 shadow-md"
-                  />
-                  <div className="mt-1 text-sm font-medium dark:text-white text-gray-700">
-                    {c.name}
-                  </div>
-                  <div className="text-xs text-indigo-400 dark:text-indigo-300">
-                    {c.role}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
+      {/* Responsive Layout */}
+      <div className="relative w-full max-w-5xl mx-auto px-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-10">
         {/* Center Contributor */}
         <motion.div
           className="z-20 flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-full shadow-2xl ring-4 ring-yellow-400 transition cursor-pointer"
@@ -117,12 +82,36 @@ const TopContributors = () => {
           </div>
         </motion.div>
 
-        {/* Tooltips */}
-        {orbiters.map((_, i) => (
-          <Tooltip key={i} id={`tooltip-${i}`} place="top" className="z-50" />
-        ))}
-        <Tooltip id="tooltip-center" place="top" className="z-50" />
+        {/* Orbiters shown in a grid on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center justify-center text-center">
+          {orbiters.map((c, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center"
+              data-tooltip-id={`tooltip-${i}`}
+              data-tooltip-content={`${c.name} — ${c.role} — ${c.points} pts`}
+            >
+              <img
+                src={c.avatar}
+                alt={c.name}
+                className="w-16 h-16 rounded-full ring-2 ring-indigo-400 shadow-md"
+              />
+              <div className="mt-1 text-sm font-medium dark:text-white text-gray-700">
+                {c.name}
+              </div>
+              <div className="text-xs text-indigo-400 dark:text-indigo-300">
+                {c.role}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Tooltips */}
+      {orbiters.map((_, i) => (
+        <Tooltip key={i} id={`tooltip-${i}`} place="top" className="z-50" />
+      ))}
+      <Tooltip id="tooltip-center" place="top" className="z-50" />
     </section>
   );
 };

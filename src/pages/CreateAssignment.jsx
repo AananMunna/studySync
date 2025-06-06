@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+import { AuthContext } from "../context/AuthProvider";
+import axios from "axios";
 
 const CreateAssignment = () => {
   const [title, setTitle] = useState("");
@@ -14,11 +17,10 @@ const CreateAssignment = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const { user } = use(AuthContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const data = {title,desc,marks,thumbnail,difficulty,dueDate}
-    console.log(data);
 
     // Validation
     if (!title || !desc || !marks || !thumbnail || !difficulty || !dueDate) {
@@ -35,6 +37,15 @@ const CreateAssignment = () => {
     setError("");
     setSuccess(true);
 
+    const data = { title, desc, marks, thumbnail, difficulty, dueDate };
+    data.email = user?.email;
+    data.creator = user?.displayName;
+    // console.log(data);
+    
+    axios.post(`${import.meta.env.VITE_URL}/createAssignment`,data)
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err))
+
     // Simulate API request
     setTimeout(() => {
       setSuccess(false);
@@ -45,6 +56,11 @@ const CreateAssignment = () => {
       setDifficulty("easy");
       setDueDate(new Date());
     }, 3000);
+    Swal.fire({
+      title: "Assignment created successfully!",
+      icon: "success",
+      draggable: true,
+    });
   };
 
   return (
@@ -123,7 +139,9 @@ const CreateAssignment = () => {
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">Thumbnail Image URL</label>
+            <label className="block mb-1 font-medium">
+              Thumbnail Image URL
+            </label>
             <input
               type="url"
               required
@@ -145,6 +163,7 @@ const CreateAssignment = () => {
             <label className="block mb-1 font-medium">Due Date</label>
             <DatePicker
               selected={dueDate}
+              readOnly
               onChange={(date) => setDueDate(date)}
               dateFormat="dd/MM/yyyy"
               className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -155,7 +174,7 @@ const CreateAssignment = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
+            className="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
           >
             Create Assignment
           </motion.button>
