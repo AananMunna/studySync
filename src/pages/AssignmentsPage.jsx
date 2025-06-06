@@ -1,27 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
+import axios from "axios";
 
-// Dummy assignments
-const assignments = [
-  {
-    id: 1,
-    title: "JavaScript Basics",
-    marks: 50,
-    level: "Easy",
-    thumbnail: "https://i.ibb.co/PrBrp6S/js-basic.jpg",
-    creatorEmail: "creator@example.com",
-  },
-  {
-    id: 2,
-    title: "React Hooks Advanced",
-    marks: 80,
-    level: "Hard",
-    thumbnail: "https://i.ibb.co/7WZs5Bb/react-hooks.jpg",
-    creatorEmail: "someone@example.com",
-  },
-];
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -48,6 +31,13 @@ const cardVariants = {
 
 const AssignmentsPage = () => {
   const currentUserEmail = "creator@example.com";
+  const [assignments, setAssignments] = useState([]);
+
+  useEffect(()=>{
+    axios.get(`${import.meta.env.VITE_URL}/getAllAssignments`)
+    .then(res => setAssignments(res.data))
+    .catch(err => console.log(err))
+  },[])
 
   return (
     <motion.div
