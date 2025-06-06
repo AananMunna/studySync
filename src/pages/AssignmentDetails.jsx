@@ -7,6 +7,7 @@ import SubmitAssignmentForm from "./SubmitAssignmentForm";
 const AssignmentDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [assignment, setAssignment] = useState();
+  const [isSticky, setIsSticky] = useState(false);
 
   const { data } = useLoaderData();
   useEffect(() => {
@@ -19,6 +20,18 @@ const handleSubmitAssignment = (data) => {
   console.log("Submit Data: ", data);
   // এখান থেকে API call দিয়ে ডাটাবেজে সেভ করো
 };
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      // Change 300 to the scroll position after which you want the button to become fixed
+      setIsSticky(scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="bg-white dark:bg-gray-900 py-12">
@@ -44,14 +57,19 @@ const handleSubmitAssignment = (data) => {
             {assignment?.title}
           </motion.h1>
 
-          <motion.button
-            onClick={() => setShowForm(true)}
-            className="px-6 py-3 text-lg cursor-pointer font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md hover:shadow-lg hover:brightness-110 transition"
-            whileTap={{ scale: 0.97 }}
-            whileHover={{ scale: 1.04 }}
-          >
-            Take Assignment
-          </motion.button>
+          <motion.a
+      href="#submit"
+      onClick={() => setShowForm(true)}
+      className={`${
+        isSticky
+          ? "fixed right-6 bottom-10 z-50"
+          : "relative inline-block" // or your original position classes
+      } px-6 py-3 text-lg cursor-pointer font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md hover:shadow-lg hover:brightness-110 transition`}
+      whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.04 }}
+    >
+      Take Assignment
+    </motion.a>
         </div>
 
         <motion.p
@@ -74,7 +92,8 @@ const handleSubmitAssignment = (data) => {
           </div>
           <div className="flex items-center gap-3 text-fuchsia-700 dark:text-fuchsia-400 font-medium">
             <FaBookOpen className="text-xl" />
-            <span>Creator: {assignment?.creator}</span>
+            <span 
+          id="submit">Creator: {assignment?.creator}</span>
           </div>
         </div>
 
@@ -85,9 +104,7 @@ const handleSubmitAssignment = (data) => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 120 }}
           >
-            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-              Submit Assignment
-            </h2>
+            
 
             {/* <form onSubmit={handleSubmitAssignment} className="space-y-5">
               <div>

@@ -45,6 +45,9 @@ const SubmitAssignmentForm = ({ onSubmit }) => {
       className="space-y-6 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-md max-w-md mx-auto"
       noValidate
     >
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+              Submit Assignment
+            </h2>
       <div>
         <label
           htmlFor="url"
