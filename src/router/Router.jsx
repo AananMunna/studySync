@@ -10,6 +10,7 @@ import AssignmentsPage from "../pages/AssignmentsPage";
 import MySubmittedAssignments from "../pages/MySubmittedAssignments";
 import PendingAssignmentsPage from "../pages/PendingAssignmentsPage";
 import AssignmentDetails from "../pages/AssignmentDetails";
+import axios from "axios";
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,8 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "AssignmentDetails",
+        path: "/assignment/view/:id",
+        loader: ({params}) => axios.get(`${import.meta.env.VITE_URL}/get-one-assignment/${params.id}`),
         element: (
           <PrivateRoute>
             <AssignmentDetails></AssignmentDetails>

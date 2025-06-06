@@ -32,6 +32,7 @@ const cardVariants = {
 const AssignmentsPage = () => {
   const currentUserEmail = "creator@example.com";
   const [assignments, setAssignments] = useState([]);
+  console.log(assignments);
 
   useEffect(()=>{
     axios.get(`${import.meta.env.VITE_URL}/getAllAssignments`)
@@ -85,15 +86,15 @@ const AssignmentsPage = () => {
                 {assignment.title}
               </h3>
               <p className="text-sm mt-1 text-gray-600 dark:text-gray-400">
-                Difficulty: <span className="font-medium">{assignment.level}</span>
+                Difficulty: <span className="font-medium">{assignment.difficulty}</span>
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Marks: <span className="font-medium">{assignment.marks}</span>
               </p>
 
               <div className="flex justify-between items-center mt-4 space-x-2">
-                <Link to={`/AssignmentDetails`}>
-                {/* <Link to={`/assignment/view/${assignment.id}`}> */}
+                {/* <Link to={`/AssignmentDetails`}> */}
+                <Link to={`/assignment/view/${assignment._id}`}>
                   <button className="p-2 bg-green-100 dark:bg-green-900 rounded-lg hover:bg-green-200 dark:hover:bg-green-700 transition">
                     <FiEye className="text-green-600 dark:text-green-300" />
                   </button>
