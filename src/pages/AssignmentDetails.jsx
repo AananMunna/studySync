@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaBookOpen, FaChartLine, FaUserGraduate } from "react-icons/fa";
 import { useLoaderData } from "react-router";
+import SubmitAssignmentForm from "./SubmitAssignmentForm";
 
 const AssignmentDetails = () => {
   const [showForm, setShowForm] = useState(false);
@@ -13,6 +14,11 @@ const AssignmentDetails = () => {
   }, [data]);
 
   // console.log(assignment);
+
+const handleSubmitAssignment = (data) => {
+  console.log("Submit Data: ", data);
+  // এখান থেকে API call দিয়ে ডাটাবেজে সেভ করো
+};
 
   return (
     <div className="bg-white dark:bg-gray-900 py-12">
@@ -40,7 +46,7 @@ const AssignmentDetails = () => {
 
           <motion.button
             onClick={() => setShowForm(true)}
-            className="px-6 py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md hover:shadow-lg hover:brightness-110 transition"
+            className="px-6 py-3 text-lg cursor-pointer font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md hover:shadow-lg hover:brightness-110 transition"
             whileTap={{ scale: 0.97 }}
             whileHover={{ scale: 1.04 }}
           >
@@ -83,13 +89,14 @@ const AssignmentDetails = () => {
               Submit Assignment
             </h2>
 
-            <form className="space-y-5">
+            {/* <form onSubmit={handleSubmitAssignment} className="space-y-5">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
                   Google Docs Link
                 </label>
                 <input
                   type="url"
+                  name="url"
                   placeholder="https://docs.google.com/..."
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-500"
                 />
@@ -101,6 +108,7 @@ const AssignmentDetails = () => {
                 </label>
                 <textarea
                   rows={4}
+                  name="textarea"
                   placeholder="Add any notes for the reviewer..."
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-500"
                 />
@@ -112,7 +120,9 @@ const AssignmentDetails = () => {
               >
                 Submit Now
               </button>
-            </form>
+            </form> */}
+            <SubmitAssignmentForm onSubmit={handleSubmitAssignment} />
+
           </motion.div>
         )}
       </motion.div>
