@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaBookOpen, FaChartLine, FaUserGraduate } from "react-icons/fa";
 import { useLoaderData } from "react-router";
 import SubmitAssignmentForm from "./SubmitAssignmentForm";
+import { AuthContext } from "../context/AuthProvider";
+import axios from "axios";
 
 const AssignmentDetails = () => {
   const [showForm, setShowForm] = useState(false);
@@ -16,9 +18,16 @@ const AssignmentDetails = () => {
 
   // console.log(assignment);
 
+  const {user} = use(AuthContext)
+  // console.log(user.email);
+
 const handleSubmitAssignment = (data) => {
+  data.email = user?.email;
+  data.name = user?.displayName
   console.log("Submit Data: ", data);
+  
   // এখান থেকে API call দিয়ে ডাটাবেজে সেভ করো
+  axios.post(`${import.meta.env.VITE_URL}/submitAssignment`, data)
 };
 
 
