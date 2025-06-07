@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import axios from "axios";
+import { AuthContext } from "../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const AssignmentsPage = () => {
-  const currentUserEmail = "creator@example.com";
+  // const [currentUserEmail, setCurrentUserEmail] = useState([]);
   const [assignments, setAssignments] = useState([]);
-
+  const { user } = use(AuthContext);
+  // console.log(user);
+  const currentUserEmail = user?.email;
+  // console.log(assignments);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_URL}/getAllAssignments`)
@@ -16,9 +21,44 @@ const AssignmentsPage = () => {
   }, []);
 
   const handleDelete = (id) => {
-    console.log("🗑️ Trying to delete assignment ID:", id);
-  };
+   Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!",
+  customClass: {
+    popup: "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
+    title: "text-xl font-semibold",
+    htmlContainer: "text-base",
+    confirmButton: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded dark:bg-blue-500 dark:hover:bg-blue-600",
+    cancelButton: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded ml-2 dark:bg-red-500 dark:hover:bg-red-600",
+  },
+  buttonsStyling: false,
+}).then((result) => {
+  if (result.isConfirmed) {
+    axios.delete(`${import.meta.env.VITE_URL}/delete-one/${id}`)
+    .catch(err => console.log(err))
+    Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success",
+      customClass: {
+        popup: "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
+        title: "text-xl font-semibold",
+        htmlContainer: "text-base",
+      },
+      buttonsStyling: false,
+    });
 
+    const remaining = assignments.filter(ass => ass._id !== id)
+    setAssignments(remaining)
+  }
+});
+
+  };
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -48,15 +88,27 @@ const AssignmentsPage = () => {
               alt={assignment.title}
               className="rounded-xl h-44 w-full object-cover mb-4 border border-gray-200 dark:border-gray-800"
             />
-
+            {/* {console.log(assignment.creator)} */}
             <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-1">
               {assignment.title}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              🎯 Difficulty: <span className="font-medium text-gray-900 dark:text-gray-200">{assignment.difficulty}</span>
+              🎯 Difficulty:{" "}
+              <span className="font-medium text-gray-900 dark:text-gray-200">
+                {assignment.difficulty}
+              </span>
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              📝 Marks: <span className="font-medium text-gray-900 dark:text-gray-200">{assignment.marks}</span>
+              📝 Marks:{" "}
+              <span className="font-medium text-gray-900 dark:text-gray-200">
+                {assignment.marks}
+              </span>
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              📝 Created by:{" "}
+              <span className="font-medium text-gray-900 dark:text-gray-200">
+                {assignment.email === user?.email ? "You" : assignment.creator}
+              </span>
             </p>
 
             <div className="flex justify-end gap-3 mt-4">
@@ -71,13 +123,18 @@ const AssignmentsPage = () => {
 
               <Link to={`/assignment/update/${assignment._id}`}>
                 <button
-                  disabled={currentUserEmail !== assignment.creatorEmail}
+                  onClick={() => handleEdit(assignment.email)}
+                  disabled={currentUserEmail !== assignment.email}
                   className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-sm hover:shadow-md ${
-                    currentUserEmail === assignment.creatorEmail
+                    currentUserEmail === assignment.email
                       ? "bg-blue-100/50 dark:bg-blue-900/20 hover:bg-blue-200/60 dark:hover:bg-blue-700/30 cursor-pointer"
                       : "bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
                   }`}
-                  title="Edit"
+                  title={`${
+                    currentUserEmail === assignment.email
+                      ? "Edit"
+                      : "🙃 Nice try! This assignment isn’t yours — you can’t ✏️ edit someone else’s masterpiece 🧠💡."
+                  }`}
                 >
                   <FiEdit className="text-blue-500 dark:text-blue-300 text-lg" />
                 </button>
@@ -85,13 +142,17 @@ const AssignmentsPage = () => {
 
               <button
                 onClick={() => handleDelete(assignment._id)}
-                disabled={currentUserEmail !== assignment.creatorEmail}
+                disabled={currentUserEmail !== assignment.email}
                 className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-sm hover:shadow-md ${
-                  currentUserEmail === assignment.creatorEmail
+                  currentUserEmail === assignment.email
                     ? "bg-red-100/50 dark:bg-red-900/20 hover:bg-red-200/60 dark:hover:bg-red-700/30 cursor-pointer"
                     : "bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
                 }`}
-                title="Delete"
+                title={`${
+                  currentUserEmail === assignment.email
+                    ? "Edit"
+                    : "🙅‍♂️ Nice try! This assignment isn’t yours — you can’t 🗑️ delete someone else’s hard-earned masterpiece 🧠🎯."
+                }`}
               >
                 <FiTrash2 className="text-red-500 dark:text-red-300 text-lg" />
               </button>

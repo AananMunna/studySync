@@ -24,7 +24,7 @@ const AssignmentDetails = () => {
 const handleSubmitAssignment = (data) => {
   data.email = user?.email;
   data.name = user?.displayName
-  console.log("Submit Data: ", data);
+  // console.log("Submit Data: ", data);
   
   // এখান থেকে API call দিয়ে ডাটাবেজে সেভ করো
   axios.post(`${import.meta.env.VITE_URL}/submitAssignment`, data)

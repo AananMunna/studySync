@@ -21,6 +21,7 @@ const submittedAssignments = [
 ];
 
 const MySubmittedAssignments = () => {
+  
   return (
     <div className="px-4 md:px-12 py-10 min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-800">
       <motion.h2
