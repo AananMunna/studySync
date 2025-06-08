@@ -5,59 +5,67 @@ import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AssignmentsPage = () => {
   // const [currentUserEmail, setCurrentUserEmail] = useState([]);
   const [assignments, setAssignments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = use(AuthContext);
   // console.log(user);
   const currentUserEmail = user?.email;
   // console.log(assignments);
   useEffect(() => {
+    setLoading(true); // 👉 ডেটা লোড শুরু
     axios
       .get(`${import.meta.env.VITE_URL}/getAllAssignments`)
       .then((res) => setAssignments(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false)); // ✅ ডেটা লোড শেষ হলে
   }, []);
 
   const handleDelete = (id) => {
-   Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!",
-  customClass: {
-    popup: "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
-    title: "text-xl font-semibold",
-    htmlContainer: "text-base",
-    confirmButton: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded dark:bg-blue-500 dark:hover:bg-blue-600",
-    cancelButton: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded ml-2 dark:bg-red-500 dark:hover:bg-red-600",
-  },
-  buttonsStyling: false,
-}).then((result) => {
-  if (result.isConfirmed) {
-    axios.delete(`${import.meta.env.VITE_URL}/delete-one/${id}`)
-    .catch(err => console.log(err))
     Swal.fire({
-      title: "Deleted!",
-      text: "Your file has been deleted.",
-      icon: "success",
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
       customClass: {
-        popup: "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
+        popup:
+          "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
         title: "text-xl font-semibold",
         htmlContainer: "text-base",
+        confirmButton:
+          "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded dark:bg-blue-500 dark:hover:bg-blue-600",
+        cancelButton:
+          "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded ml-2 dark:bg-red-500 dark:hover:bg-red-600",
       },
       buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${import.meta.env.VITE_URL}/delete-one/${id}`)
+          .catch((err) => console.log(err));
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+          customClass: {
+            popup:
+              "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl",
+            title: "text-xl font-semibold",
+            htmlContainer: "text-base",
+          },
+          buttonsStyling: false,
+        });
+
+        const remaining = assignments.filter((ass) => ass._id !== id);
+        setAssignments(remaining);
+      }
     });
-
-    const remaining = assignments.filter(ass => ass._id !== id)
-    setAssignments(remaining)
-  }
-});
-
   };
   return (
     <motion.div
@@ -75,7 +83,26 @@ const AssignmentsPage = () => {
         📱 StudySync Dashboard
       </motion.h2>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+     {assignments.length === 0 ? <div className="flex flex-col items-center justify-center text-center py-24 px-6 md:px-10 bg-gradient-to-br from-white via-gray-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-2xl shadow-inner border border-dashed border-indigo-400 dark:border-indigo-600 transition duration-500">
+  
+  <div className="text-6xl mb-6 animate-pulse">📚</div>
+  
+  <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+    No Assignments Yet!
+  </h2>
+
+  <p className="text-gray-600 dark:text-gray-400 max-w-md mb-6">
+    You haven’t added any assignments yet. Start by creating your first one and help others learn better! 🚀
+  </p>
+
+  <Link
+    to="/create"
+    className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-105 transition duration-300"
+  >
+    ➕ Add Assignment
+  </Link>
+</div>
+:  loading ? <LoadingSpinner/> : <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {assignments.map((assignment) => (
           <motion.div
             key={assignment._id}
@@ -123,7 +150,6 @@ const AssignmentsPage = () => {
 
               <Link to={`/assignment/update/${assignment._id}`}>
                 <button
-                  onClick={() => handleEdit(assignment.email)}
                   disabled={currentUserEmail !== assignment.email}
                   className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-sm hover:shadow-md ${
                     currentUserEmail === assignment.email
@@ -159,7 +185,8 @@ const AssignmentsPage = () => {
             </div>
           </motion.div>
         ))}
-      </div>
+      </div>}
+     {/* {console.log(assignments)} */}
     </motion.div>
   );
 };

@@ -11,6 +11,7 @@ import MySubmittedAssignments from "../pages/MySubmittedAssignments";
 import PendingAssignmentsPage from "../pages/PendingAssignmentsPage";
 import AssignmentDetails from "../pages/AssignmentDetails";
 import axios from "axios";
+import UpdateAssignment from "../components/UpdateAssignment";
 
 export const router = createBrowserRouter([
   {
@@ -57,16 +58,15 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "tipDetails/:id",
-      //   loader: ({ params }) =>
-      //     fetch(`https://gardening-hub-server.vercel.app/tips/${params.id}`),
-      //   element: (
-      //     <PrivateRoute>
-      //       <TipDetails></TipDetails>
-      //     </PrivateRoute>
-      //   ),
-      // },
+      {
+        path: "/assignment/update/:id",
+        loader: ({params}) => axios.get(`${import.meta.env.VITE_URL}/get-one-assignment/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <UpdateAssignment></UpdateAssignment>
+          </PrivateRoute>
+        ),
+      },
       { path: "login", Component: Login },
       { path: "register", Component: Register },
       { path: "*", Component: NotFound },
