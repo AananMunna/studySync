@@ -1,10 +1,11 @@
 import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaBookOpen, FaChartLine, FaUserGraduate } from "react-icons/fa";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import SubmitAssignmentForm from "./SubmitAssignmentForm";
 import { AuthContext } from "../context/AuthProvider";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AssignmentDetails = () => {
   const [showForm, setShowForm] = useState(false);
@@ -21,13 +22,42 @@ const AssignmentDetails = () => {
   const {user} = use(AuthContext)
   // console.log(user.email);
 
-const handleSubmitAssignment = (data) => {
-  data.email = user?.email;
-  data.name = user?.displayName
-  // console.log("Submit Data: ", data);
+  const navigate = useNavigate();
+const handleSubmitAssignment = async(formData) => {
+
+    const payload = {
+    userEmail: user?.email,
+    userName: user?.displayName,
+    assignmentId:assignment._id,
+    docsLink: formData.url,
+    note: formData.note,
+    status: "pending",
+  };
   
-  // এখান থেকে API call দিয়ে ডাটাবেজে সেভ করো
-  axios.post(`${import.meta.env.VITE_URL}/submitAssignment`, data)
+   try {
+    const res = await axios.post(`${import.meta.env.VITE_URL}/submitAssignment`, payload);
+    
+    if (res.data?.insertedId || res.data?.acknowledged) {
+      Swal.fire({
+        icon: "success",
+        title: "Submitted!",
+        text: "Your assignment was successfully submitted 🎉",
+        confirmButtonColor: "#22c55e"
+      });
+
+    } else {
+      throw new Error("Something went wrong!");
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops!",
+      text: error?.response?.data?.message || "Failed to submit the assignment 😢",
+      confirmButtonColor: "#ef4444"
+    });
+  }
+      navigate("/submissions");
+
 };
 
 
