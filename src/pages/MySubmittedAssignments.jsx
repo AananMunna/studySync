@@ -1,26 +1,48 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { AuthContext } from "../context/AuthProvider";
+import LoadingSpinner from "../components/LoadingSpinner";
+import axios from "axios";
 
-const submittedAssignments = [
-  {
-    id: 1,
-    title: "JavaScript Basics",
-    totalMarks: 50,
-    obtainedMarks: 45,
-    status: "Reviewed",
-    feedback: "Well done! Just missed edge cases.",
-  },
-  {
-    id: 2,
-    title: "React Hooks Advanced",
-    totalMarks: 80,
-    obtainedMarks: null,
-    status: "Pending",
-    feedback: null,
-  },
-];
+// const submittedAssignments = [
+//   {
+//     id: 1,
+//     title: "JavaScript Basics",
+//     totalMarks: 50,
+//     obtainedMarks: 45,
+//     status: "Reviewed",
+//     feedback: "Well done! Just missed edge cases.",
+//   },
+//   {
+//     id: 2,
+//     title: "React Hooks Advanced",
+//     totalMarks: 80,
+//     obtainedMarks: null,
+//     status: "Pending",
+//     feedback: null,
+//   },
+// ];
 
 const MySubmittedAssignments = () => {
+    const [submittedAssignments, setSubmittedAssignments] = useState(null);    // state to store fetched data
+  const [loading, setLoading] = useState(true); // state to track loading
+  const [error, setError] = useState(null);  // state to track errors
+  const {user} = use(AuthContext)
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_URL}/my-assignment/${user?.email}`)
+      .then(response => {
+        setSubmittedAssignments(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message || 'Something went wrong');
+        setLoading(false);
+      });
+  }, []);  // empty dependency array = run once on mount
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p>Error: {error}</p>;
   
   return (
     <div className="px-4 md:px-12 py-10 min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-800">
@@ -66,9 +88,9 @@ const MySubmittedAssignments = () => {
                     {assignment.status}
                   </span>
                 </td>
-                <td className="p-3 text-gray-800 dark:text-gray-200">{assignment.totalMarks}</td>
+                <td className="p-3 text-gray-800 dark:text-gray-200">{assignment.totalMark}</td>
                 <td className="p-3 text-gray-800 dark:text-gray-200">
-                  {assignment.obtainedMarks !== null ? assignment.obtainedMarks : "-"}
+                  {assignment.givenMark !== null ? assignment.givenMark : "-"}
                 </td>
                 <td className="p-3 text-gray-800 dark:text-gray-400">
                   {assignment.feedback || (

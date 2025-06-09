@@ -26,6 +26,8 @@ const AssignmentDetails = () => {
 const handleSubmitAssignment = async(formData) => {
 
     const payload = {
+      totalMark:assignment?.marks,
+    title: assignment.title,
     userEmail: user?.email,
     userName: user?.displayName,
     assignmentId:assignment._id,
