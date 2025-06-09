@@ -138,13 +138,13 @@ const AssignmentsPage = () => {
                   </button>
                 </Link>
 
-                <Link to={`/assignment/update/${assignment._id}`}>
+                <Link to={`/assignment/update/${assignment._id}`} className={`${currentUserEmail === assignment.email ? 'block':'hidden'}`}>
                   <button
                     disabled={currentUserEmail !== assignment.email}
                     className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-sm hover:shadow-md ${
                       currentUserEmail === assignment.email
                         ? "bg-blue-100/50 dark:bg-blue-900/20 hover:bg-blue-200/60 dark:hover:bg-blue-700/30 cursor-pointer"
-                        : "bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
+                        : "bg-gray-200 hidden dark:bg-gray-700 cursor-not-allowed"
                     }`}
                     title={`${
                       currentUserEmail === assignment.email
@@ -154,18 +154,18 @@ const AssignmentsPage = () => {
                   >
                     <FiEdit className="text-blue-500 dark:text-blue-300 text-lg" />
                   </button>
-                </Link>
+                </Link >
                   <button
                     onClick={() => handleDelete(assignment._id)}
                     disabled={currentUserEmail !== assignment.email}
                     className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-sm hover:shadow-md ${
                       currentUserEmail === assignment.email
                         ? "bg-red-100/50 dark:bg-red-900/20 hover:bg-red-200/60 dark:hover:bg-red-700/30 cursor-pointer"
-                        : "bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
+                        : "hidden bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
                     }`}
                     title={`${
                       currentUserEmail === assignment.email
-                        ? "Edit"
+                        ? "Delete"
                         : "🙅‍♂️ Nice try! This assignment isn’t yours — you can’t 🗑️ delete someone else’s hard-earned masterpiece 🧠🎯."
                     }`}
                   >
