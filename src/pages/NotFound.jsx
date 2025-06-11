@@ -4,36 +4,36 @@ import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 dark:bg-gray-900 px-6 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-6">
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="max-w-xl"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-xl w-full text-center"
       >
-        <img
-          src="https://media.tenor.com/1cL5fzcjpaQAAAAM/laptop.gif"
-          alt="Cat Studying Illustration"
-          className="w-64 mt-5 mx-auto mb-8 rounded-xl shadow-lg"
-        />
-
-        <h1 className="text-6xl font-extrabold text-blue-700 dark:text-blue-400 mb-2 select-none animate-pulse">
+        {/* Large subtle "404" with light shadow */}
+        <h1 className="text-[10rem] font-extrabold text-gray-300 dark:text-gray-700 select-none leading-none">
           404
         </h1>
 
-        <h2 className="text-2xl md:text-4xl font-semibold text-blue-900 dark:text-blue-200 mb-4">
-          Lost in the Pages?
+        {/* Headline */}
+        <h2 className="text-4xl font-semibold text-gray-900 dark:text-white mb-4">
+          Oops! This page can’t be found.
         </h2>
 
-        <p className="text-blue-700 dark:text-blue-300 text-base md:text-lg mb-8">
-          This page doesn’t exist, but our study cat is still focused! Let’s get you back to your lessons.
+        {/* Subtext */}
+        <p className="text-gray-600 dark:text-gray-300 text-lg mb-10 max-w-md mx-auto">
+          Sorry, the page you’re looking for doesn’t exist or has been moved.
+          Let’s get you back on track.
         </p>
 
+        {/* Minimal Apple-style button with subtle hover */}
         <Link
           to="/"
-          className="inline-block mb-5 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          className="inline-block rounded-md border border-gray-300 dark:border-gray-700 px-8 py-3 text-gray-900 dark:text-white text-lg font-medium
+            transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
-          ⬅ Back to Home
+          Go to Homepage
         </Link>
       </motion.div>
     </div>

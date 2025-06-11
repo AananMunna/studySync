@@ -62,59 +62,58 @@ const UpdateAssignment = () => {
       });
   };
 
-  return (
-    <motion.div
-      className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+return (
+  <motion.div
+    className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white flex items-center justify-center p-6"
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+  >
+    <motion.form
+      onSubmit={handleUpdate}
+      className="w-full max-w-3xl bg-gray-100 dark:bg-zinc-900 rounded-3xl p-10 md:p-16 shadow-xl space-y-6"
     >
-      {/* 🔽 Update Form UI */}
-      <motion.form
-        onSubmit={handleUpdate}
-        className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-2xl space-y-5"
-      >
-        <h2 className="text-3xl font-bold text-center text-green-600 dark:text-green-300 mb-6">
-          Update Assignment
-        </h2>
+      <h2 className="text-4xl md:text-5xl font-semibold text-center text-zinc-800 dark:text-white mb-10">
+        Update Assignment
+      </h2>
 
-        {/* 🧾 Title Input */}
+      <div className="space-y-6">
         <input
           name="title"
           value={formData.title}
           onChange={handleChange}
-          placeholder="Title"
+          placeholder="Assignment Title"
           required
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+          className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
         />
 
-        {/* 🧾 Description */}
         <textarea
           name="desc"
           value={formData.desc}
           onChange={handleChange}
-          placeholder="Description"
+          placeholder="Assignment Description"
           required
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+          rows={4}
+          className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
         />
 
-        {/* 🧾 Marks & Difficulty Level */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           <input
             type="number"
             name="marks"
             value={formData.marks}
             onChange={handleChange}
-            placeholder="Marks"
+            placeholder="Total Marks"
             min="1"
             required
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
           />
+
           <select
             name="difficulty"
             value={formData.difficulty}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
           >
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
@@ -122,7 +121,6 @@ const UpdateAssignment = () => {
           </select>
         </div>
 
-        {/* 🖼️ Thumbnail URL Input */}
         <input
           type="url"
           name="thumbnail"
@@ -130,40 +128,39 @@ const UpdateAssignment = () => {
           onChange={handleChange}
           placeholder="Thumbnail Image URL"
           required
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+          className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
         />
 
-        {/* 🖼️ Preview Thumbnail if URL is entered */}
         {formData.thumbnail && (
           <img
             src={formData.thumbnail}
-            alt="Preview"
-            className="rounded-md mt-2 w-full max-h-60 object-cover"
+            alt="Thumbnail"
+            className="rounded-2xl w-full max-h-64 object-cover mt-2 shadow-md"
           />
         )}
 
-        {/* 📅 Date Picker for Due Date */}
         <DatePicker
           selected={formData.dueDate}
           onChange={(date) =>
             setFormData((prev) => ({ ...prev, dueDate: date }))
           }
           dateFormat="dd/MM/yyyy"
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+          className="w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-lg px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
         />
 
-        {/* ✅ Submit Button */}
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
+          className="w-full bg-green-600 hover:bg-green-700 text-white text-lg font-medium py-4 rounded-xl transition-all duration-300"
         >
-          Update Assignment
+          Save Changes
         </motion.button>
-      </motion.form>
-    </motion.div>
-  );
+      </div>
+    </motion.form>
+  </motion.div>
+);
+
 };
 
 export default UpdateAssignment;

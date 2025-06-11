@@ -9,7 +9,7 @@ export default function Footer() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="relative z-50 bg-white dark:bg-black text-gray-800 dark:text-gray-200 px-6 py-20 sm:px-16 overflow-hidden"
+      className="relative z-0 bg-white dark:bg-black text-gray-800 dark:text-gray-200 px-6 py-20 sm:px-16 overflow-hidden"
     >
       {/* Glowing aura effect */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 blur-3xl opacity-30 pointer-events-none w-[500px] h-[500px] bg-gradient-to-br from-indigo-500 via-purple-600 to-transparent rounded-full" />

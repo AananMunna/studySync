@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
 import Swal from "sweetalert2";
 import LoadingSpinner from "../components/LoadingSpinner";
+import DashboardHeader from "../components/DashboardHeader";
 
 const AssignmentsPage = () => {
   const [assignments, setAssignments] = useState([]);
@@ -75,30 +76,7 @@ const AssignmentsPage = () => {
       className="min-h-screen px-4 md:px-8 py-8 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm"
     >
       {/* Header with floating glass effect */}
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className=" top-0 z-10 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 mb-8 shadow-sm border border-gray-200/50 dark:border-white/10"
-      >
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-              StudySync Dashboard
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {assignments.length} assignments found
-            </p>
-          </div>
-          <Link 
-            to="/create"
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all shadow-md hover:shadow-lg active:scale-95"
-          >
-            <FiPlus className="text-lg" />
-            New Assignment
-          </Link>
-        </div>
-      </motion.header>
+      <DashboardHeader assignments = {assignments} />
 
       {loading ? (
         <LoadingSpinner />

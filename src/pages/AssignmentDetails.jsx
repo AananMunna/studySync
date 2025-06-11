@@ -217,7 +217,7 @@ const AssignmentDetails = () => {
                 <motion.div
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className={`${isSticky ? "fixed right-6 bottom-6 z-50" : "relative"}`}
+                  className={`${isSticky ? "fixed right-6 bottom-3 z-50" : "relative"}`}
                 >
                   <motion.button
                     onClick={() => setShowForm(true)}

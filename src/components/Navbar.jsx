@@ -61,6 +61,7 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   return (
+    <>
     <motion.nav
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -206,25 +207,38 @@ export default function Navbar() {
         </motion.div>
       )}
 
-      {/* Bottom Mobile Nav */}
-      <div className="lg:hidden bottom-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-white/20 dark:border-gray-700 flex justify-around py-2 z-50">
-        {navLinks.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) =>
-              `flex flex-col items-center text-xs ${
-                isActive
-                  ? "text-blue-600 dark:text-yellow-400"
-                  : "text-gray-500 dark:text-gray-300"
-              }`
-            }
-          >
-            {link.icon}
-            <span className="text-[10px]">{link.label}</span>
-          </NavLink>
-        ))}
-      </div>
+
+
     </motion.nav>
+{/* iOS-style Fixed Bottom Mobile Nav */}
+<div className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-white dark:bg-gray-800 shadow-xl backdrop-blur-lg border border-gray-300/50 dark:border-white/10 rounded-2xl px-4 py-2 flex justify-between items-center z-50">
+  {navLinks.map((link) => (
+    <NavLink
+      key={link.to}
+      to={link.to}
+      className={({ isActive }) =>
+        `group flex flex-col items-center justify-center flex-1 transition-all duration-200 truncate ${
+          isActive
+            ? "text-blue-600 dark:text-yellow-400"
+            : "text-gray-400 dark:text-gray-300"
+        }`
+      }
+    >
+      <div
+        className={`
+          w-10 h-10 flex items-center justify-center rounded-full
+          transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-white/10
+          ${location.pathname === link.to ? "bg-blue-100 dark:bg-yellow-500/10" : ""}
+        `}
+      >
+        {link.icon}
+      </div>
+      <span className="text-[11px] mt-1 leading-tight truncate w-[90%] text-center">
+        {link.label}
+      </span>
+    </NavLink>
+  ))}
+</div>
+    </>
   );
 }

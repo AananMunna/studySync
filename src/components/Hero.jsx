@@ -39,7 +39,7 @@ export default function HeroSection() {
               Explore Assignments
             </Link>
             <Link
-              to="/login"
+              to="/create"
               className="px-6 py-3 border-2 border-indigo-500 dark:border-indigo-400 text-indigo-600 dark:text-indigo-300 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors"
             >
               Get Started

@@ -216,7 +216,7 @@ const MySubmittedAssignments = () => {
               You haven't submitted any assignments yet.
             </p>
             <Link
-              to="/submit-assignment"
+              to="/assignments"
               className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Submit Your First Assignment
