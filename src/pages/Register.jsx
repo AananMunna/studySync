@@ -46,7 +46,7 @@ const Register = () => {
         showConfirmButton: false,
       });
 
-      navigate("/");
+      navigate("/assignments");
     } catch (error) {
       setError(error.message);
       Swal.fire({
@@ -66,7 +66,7 @@ const Register = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      navigate("/");
+      navigate("/assignments");
     } catch (error) {
       setError(error.message);
       Swal.fire({

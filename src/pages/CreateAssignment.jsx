@@ -2,7 +2,7 @@ import React, { use, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthProvider";
 import axios from "axios";
@@ -18,6 +18,8 @@ const CreateAssignment = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
+  
 
   const { user } = use(AuthContext);
 
@@ -67,6 +69,7 @@ const CreateAssignment = () => {
         showConfirmButton: false,
         timer: 2000
       });
+      navigate("/assignments");
 
       // Reset form
       setTitle("");

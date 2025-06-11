@@ -173,7 +173,7 @@ This project was developed as a part of the **BJET Inc. Junior MERN Developer As
 
 ## 🧑‍💻 Contact
 
-📧 Email: your-email@example.com   
+📧 Email: aananmunna420@gmail.com  
 📍 Location: Bangladesh
 
 ---

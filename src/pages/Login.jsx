@@ -11,6 +11,26 @@ const Login = () => {
   const { login, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+      Swal.fire({
+        title: "Google login successful!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      navigate("/assignments");
+    } catch (error) {
+      setError(error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Google login failed",
+        text: error.message,
+      });
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -19,7 +39,7 @@ const Login = () => {
     login(email, password)
       .then(() => {
         Swal.fire("Success!", "Logged in!", "success");
-        navigate("/");
+        navigate("/assignments");
       })
       .catch((err) => {
         Swal.fire("Error", err.message, "error");
@@ -103,7 +123,7 @@ const Login = () => {
 
               <button
                 type="button"
-                onClick={googleLogin}
+                onClick={handleGoogleLogin}
                 className="w-full border cursor-pointer border-blue-600 py-2 rounded-md text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-800"
               >
                 

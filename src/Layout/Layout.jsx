@@ -13,7 +13,9 @@ const Layout = () => {
         <ScrollToTop />
         <Navbar></Navbar>
          {isLoading && <LoadingSpinner />}
-        <Outlet></Outlet>
+        <div className="my-20 lg:my-10">
+            <Outlet></Outlet>
+        </div>
         <Footer></Footer>
         </>
     );
