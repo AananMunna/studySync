@@ -8,38 +8,13 @@ import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Swal from "sweetalert2";
 
-// const pendingAssignments = [
-//   {
-//     id: 1,
-//     title: "Intro to HTML",
-//     marks: 50,
-//     examineeName: "Alice Khan",
-//     examineeEmail: "alice@example.com",
-//     status: "Pending",
-//     docLink: "https://docs.google.com/document/d/1abc123",
-//     notes: "I have completed all the tasks and added screenshots in the doc.",
-//   },
-//   {
-//     id: 2,
-//     title: "CSS Flexbox Project",
-//     marks: 80,
-//     examineeName: "Bob Islam",
-//     examineeEmail: "bob@example.com",
-//     status: "Pending",
-//     docLink: "https://docs.google.com/document/d/2xyz456",
-//     notes: "Please check the last part of the project, I was confused there.",
-//   },
-// ];
-
-
 const PendingAssignmentsPage = () => {
   const [selected, setSelected] = useState(null);
   const [givenMark, setGivenMark] = useState("");
   const [feedback, setFeedback] = useState("");
-
-  const [pendingAssignments, SetPendingAssignments] = useState(null); // state to store fetched data
-  const [loading, setLoading] = useState(true); // state to track loading
-  const [error, setError] = useState(null); // state to track errors
+  const [pendingAssignments, SetPendingAssignments] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { user } = use(AuthContext);
 
   const handleOpenModal = (assignment) => {
@@ -54,37 +29,36 @@ const PendingAssignmentsPage = () => {
     selected.examinerEmail = user.email;
     selected.examiner = user.displayName;
     selected.status = "reviewed";
-    console.log(selected);
-    
-      axios.put(`${import.meta.env.VITE_URL}/give-mark/${selected._id}`, selected)
-    .then(res => {
-      if (res.data.modifiedCount > 0) {
+
+    axios
+      .put(`${import.meta.env.VITE_URL}/give-mark/${selected._id}`, selected)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Marks Given!",
+            text: "The assignment was marked successfully.",
+          });
+        } else {
+          Swal.fire({
+            icon: "info",
+            title: "No Update",
+            text: "Nothing was changed.",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
         Swal.fire({
-          icon: 'success',
-          title: 'Marks Given!',
-          text: 'The assignment was marked successfully.',
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
         });
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'No Update',
-          text: 'Nothing was changed.',
-        });
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
       });
-    });
     setSelected(null);
-    const remaining = pendingAssignments.filter(a => a.status === 'pending');
+    const remaining = pendingAssignments.filter((a) => a.status === "pending");
     SetPendingAssignments(remaining);
   };
-
 
   useEffect(() => {
     axios
@@ -97,130 +71,236 @@ const PendingAssignmentsPage = () => {
         setError(err.message || "Something went wrong");
         setLoading(false);
       });
-  }, []); // empty dependency array = run once on mount
+  }, []);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="min-h-screen px-4 md:px-12 py-10 bg-gradient-to-b from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <motion.h2
-        className="text-3xl md:text-4xl font-bold text-center mb-10 text-indigo-800 dark:text-indigo-300"
+    <div className="min-h-screen px-4 md:px-12 py-10 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-950/50 dark:to-gray-900/50">
+      {/* Floating header */}
+      <motion.div 
+        className="relative z-10"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        🧾 Pending Assignments
-      </motion.h2>
+        <div className="bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700/30 max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+              Pending Assignments
+            </span>
+          </h2>
+          <p className="text-center text-gray-600 dark:text-gray-400 mt-2">
+            Review and evaluate submitted work
+          </p>
+        </div>
+      </motion.div>
 
-      {pendingAssignments.length > 0 ? <motion.div
-        className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          visible: {
-            transition: {
-              staggerChildren: 0.1,
-            },
-          },
-        }}
-      >
-        {pendingAssignments.map((assignment) => (
+      {/* Content area */}
+      <div className="relative mt-12">
+        {/* Depth effect background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 to-purple-500/10 opacity-20 dark:opacity-30"></div>
+        </div>
+
+        {pendingAssignments.length > 0 ? (
           <motion.div
-            key={assignment?._id}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 border border-gray-200 dark:border-gray-700"
-            whileHover={{ scale: 1.03 }}
+            className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            initial="hidden"
+            animate="visible"
             variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 },
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
             }}
           >
-            <h3 className="text-xl font-semibold text-indigo-700 dark:text-indigo-200">
-              {assignment?.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Marks: {assignment?.totalMark}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400">
-              Examinee: {assignment?.userEmail === user.email ? 'You': assignment?.userName}
-            </p>
-
-            <button
-              onClick={() => handleOpenModal(assignment)}
-              className={`mt-4 flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-700 transition ${assignment?.userEmail === user.email ? 'hidden': 'cursor-pointer'}`}
-            >
-              <FiEdit3 /> Give Mark
-            </button>
+            {pendingAssignments.map((assignment) => (
+              <motion.div
+                key={assignment?._id}
+                className="relative group"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                {/* Glass card with depth */}
+                <div className="relative overflow-hidden rounded-2xl h-full">
+                  {/* Depth layers */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-lg transition-all duration-300 group-hover:shadow-xl"></div>
+                  
+                  {/* Content */}
+                  <div className="relative h-full flex flex-col p-6">
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          {assignment?.title}
+                        </h3>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200">
+                          {assignment?.totalMark} pts
+                        </span>
+                      </div>
+                      
+                      <div className="mt-4 space-y-2">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          <span className="font-medium">Submitted by:</span>{" "}
+                          {assignment?.examineEmail === user.email
+                            ? "You"
+                            : assignment?.examineName}
+                        </p>
+                        
+                        {assignment.examineEmail === user.email && (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                            Awaiting review by an examiner
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {assignment?.examineEmail !== user.email && (
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleOpenModal(assignment)}
+                        className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white rounded-xl hover:bg-white dark:hover:bg-gray-700 transition-all shadow-sm hover:shadow-md border border-gray-200/50 dark:border-gray-700/50"
+                      >
+                        <FiEdit3 className="text-blue-500" />
+                        <span>Evaluate</span>
+                      </motion.button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
-        ))}
-      </motion.div>:<div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 4h6a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 002 2zm3-14v.01M12 12v.01" />
-  </svg>
-  <h2 className="text-xl font-semibold text-gray-600">No Pending Assignments</h2>
-  <p className="text-sm text-gray-400">All assignments have been reviewed. Great job!</p>
-</div>}
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg rounded-2xl p-8 border border-white/30 dark:border-gray-700/30 shadow-lg max-w-md w-full">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-gray-500 dark:text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 4h6a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 002 2zm3-14v.01M12 12v.01"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                No Pending Assignments
+              </h2>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
+                All assignments have been reviewed. Great job!
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white dark:bg-gray-900 rounded-xl p-6 w-full max-w-lg mx-4 relative"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              transition={{ type: "spring", stiffness: 200 }}
+              className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl p-6 w-full max-w-lg border border-white/30 dark:border-gray-700/30 shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
-              <h3 className="text-2xl font-bold text-indigo-800 dark:text-indigo-200 mb-4">
-                🧠 Evaluate Assignment
-              </h3>
+              {/* Depth effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-30 -z-10"></div>
+              
+              <div className="relative">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                    Evaluate Submission
+                  </span>
+                </h3>
 
-              <p className="text-sm mb-2 text-gray-700 dark:text-gray-300">
-                <strong>Notes:</strong> {selected.note}
-              </p>
+                <div className="space-y-4">
+                  <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-4 border border-white/30 dark:border-gray-700/30">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-1">{selected.title}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      <span className="font-medium">Notes:</span> {selected.note}
+                    </p>
+                    <a
+                      href={selected.docsLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      View submission <FaExternalLinkAlt className="text-xs" />
+                    </a>
+                  </div>
 
-              <a
-                href={selected.docsLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                View Google Doc <FaExternalLinkAlt />
-              </a>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Grade
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="Enter marks"
+                        required
+                        className="w-full px-4 py-2 bg-white/70 dark:bg-gray-800/70 border border-gray-200/50 dark:border-gray-700/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        value={givenMark}
+                        onChange={(e) => setGivenMark(e.target.value)}
+                      />
+                    </div>
 
-              <div className="mt-4 space-y-3">
-                <input
-                  type="number"
-                  placeholder="Enter marks"
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
-                  value={givenMark}
-                  onChange={(e) => setGivenMark(e.target.value)}
-                />
-                <textarea
-                  placeholder="Feedback"
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
-                  value={feedback}
-                  onChange={(e) => setFeedback(e.target.value)}
-                ></textarea>
-                <button
-                  onClick={handleSubmit}
-                  className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-                >
-                  <MdOutlineAssignmentTurnedIn className="inline-block mr-2" />
-                  Submit Evaluation
-                </button>
-                <button
-                  className="w-full text-sm mt-2 text-gray-500 hover:text-red-500"
-                  onClick={() => setSelected(null)}
-                >
-                  Cancel
-                </button>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Feedback
+                      </label>
+                      <textarea
+                        placeholder="Provide detailed feedback..."
+                        required
+                        rows="4"
+                        className="w-full px-4 py-2 bg-white/70 dark:bg-gray-800/70 border border-gray-200/50 dark:border-gray-700/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        value={feedback}
+                        onChange={(e) => setFeedback(e.target.value)}
+                      ></textarea>
+                    </div>
+
+                    <div className="flex gap-3 pt-2">
+                      <button
+                        type="submit"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:opacity-90 transition-opacity shadow-md"
+                      >
+                        <MdOutlineAssignmentTurnedIn className="text-lg" />
+                        Submit Evaluation
+                      </button>
+                      <button
+                        type="button"
+                        className="px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition"
+                        onClick={() => setSelected(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </motion.div>
           </motion.div>
