@@ -1,82 +1,73 @@
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 py-16 px-6 sm:px-12">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10 md:gap-0">
+    <motion.footer
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      viewport={{ once: true }}
+      className="relative z-50 bg-white dark:bg-black text-gray-800 dark:text-gray-200 px-6 py-20 sm:px-16 overflow-hidden"
+    >
+      {/* Glowing aura effect */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 blur-3xl opacity-30 pointer-events-none w-[500px] h-[500px] bg-gradient-to-br from-indigo-500 via-purple-600 to-transparent rounded-full" />
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16 items-start lg:items-center text-center lg:text-left relative z-10">
         {/* Logo & Description */}
-        <div className="md:w-1/3 flex flex-col items-center md:items-start text-center md:text-left space-y-4">
-          <h1 className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
-            <span role="img" aria-label="book">📘</span> StudySync
-          </h1>
-          <p className="text-sm md:text-base max-w-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-            Empowering your group study with easy assignment management and seamless collaboration.
+        <div className="space-y-4">
+          <h1 className="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight">📘 StudySync</h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs mx-auto lg:mx-0">
+            Next-gen study platform to sync, submit, and score your group learning seamlessly.
           </p>
-          <a
-            href="#signup"
-            className="mt-2 inline-block bg-indigo-600 dark:bg-indigo-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-indigo-700 dark:hover:bg-indigo-600 transition"
+          <Link
+            to="/assignments"
+            className="inline-block mt-4 bg-indigo-600 dark:bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition"
           >
             Get Started
-          </a>
+          </Link>
         </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-col sm:flex-row space-y-8 sm:space-y-0 sm:space-x-24 text-sm md:text-base font-semibold">
-          <div className="flex flex-col space-y-3">
-            <h3 className="mb-2 text-gray-900 dark:text-gray-100 text-lg">Product</h3>
-            <a href="#how-it-works" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">How It Works</a>
-            <a href="#features" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">Features</a>
-            <a href="#faq" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">FAQ</a>
+        {/* Navigation */}
+        <div className="flex justify-center lg:justify-center gap-16 text-sm font-medium">
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Product</h3>
+            <a href="#how-it-works" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">How It Works</a>
+            <a href="#features" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Features</a>
+            <a href="#faq" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">FAQ</a>
           </div>
-          <div className="flex flex-col space-y-3">
-            <h3 className="mb-2 text-gray-900 dark:text-gray-100 text-lg">Support</h3>
-            <Link to="/contact" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">Contact Us</Link>
-            <Link to="/help" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">Help Center</Link>
-            <Link to="/privacy" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300">Privacy Policy</Link>
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Support</h3>
+            <Link to="/contact" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Contact</Link>
+            <Link to="/help" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Help Center</Link>
+            <Link to="/privacy" className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Privacy Policy</Link>
           </div>
         </div>
 
         {/* Social Icons */}
-        <div className="flex space-x-8 text-xl md:text-2xl mt-2 md:mt-0">
-          {[{
-            href: "https://facebook.com",
-            label: "Facebook",
-            icon: <FaFacebookF />
-          },{
-            href: "https://twitter.com",
-            label: "Twitter",
-            icon: <FaTwitter />
-          },{
-            href: "https://linkedin.com",
-            label: "LinkedIn",
-            icon: <FaLinkedinIn />
-          },{
-            href: "https://github.com",
-            label: "GitHub",
-            icon: <FaGithub />
-          }].map(({href, label, icon}) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition duration-300"
-            >
-              {icon}
-            </a>
-          ))}
+        <div className="flex flex-col items-center lg:items-end space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Follow Us</h3>
+          <div className="flex space-x-5">
+            {[FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub].map((Icon, idx) => (
+              <motion.a
+                key={idx}
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                href="#"
+                className="bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-white p-3 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-500/30 transition"
+              >
+                <Icon />
+              </motion.a>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="border-t border-gray-200 dark:border-gray-800 mt-12" />
-
-      {/* Copyright */}
-      <div className="mt-6 text-center text-xs text-gray-500 dark:text-gray-400 select-none">
+      {/* Divider & Copyright */}
+      <div className="mt-16 border-t border-gray-300 dark:border-white/10 pt-6 text-center text-xs text-gray-500 dark:text-gray-400">
         &copy; {new Date().getFullYear()} StudySync. All rights reserved.
       </div>
-    </footer>
+    </motion.footer>
   );
 }
