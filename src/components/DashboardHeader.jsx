@@ -1,10 +1,10 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { FiPlus, FiSearch, FiChevronDown } from "react-icons/fi";
+import { FiPlus, FiSearch } from "react-icons/fi";
 import { Link } from "react-router";
 
-const DashboardHeader = ({ assignments }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
+const DashboardHeader = ({ assignments, searchText,setSearchText,difficulty,setDifficulty }) => {
+
 
   return (
     <motion.header
@@ -32,12 +32,22 @@ const DashboardHeader = ({ assignments }) => {
             <input
               type="text"
               placeholder="Search..."
+              value={searchText}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchText(value);
+              }}
               className="w-full bg-transparent outline-none text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Difficulty dropdown */}
           <select
+            value={difficulty}
+            onChange={(e) => {
+              const value = e.target.value;
+              setDifficulty(value);
+            }}
             className="text-sm px-3 py-2 rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-gray-300/50 dark:border-white/20 text-gray-800 dark:text-white shadow-inner appearance-none hover:ring-2 ring-blue-400 transition-all"
           >
             <option value="">All</option>
@@ -45,8 +55,6 @@ const DashboardHeader = ({ assignments }) => {
             <option value="medium">🟡 Medium</option>
             <option value="hard">🔴 Hard</option>
           </select>
-
-          
 
           {/* New Assignment Button */}
           <Link

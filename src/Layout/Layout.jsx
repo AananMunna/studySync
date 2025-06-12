@@ -13,7 +13,7 @@ const Layout = () => {
         <ScrollToTop />
         <Navbar></Navbar>
          {isLoading && <LoadingSpinner />}
-        <div className="py-20 lg:py-10">
+        <div className="py-10">
             <Outlet></Outlet>
         </div>
         <Footer></Footer>

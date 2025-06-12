@@ -14,14 +14,36 @@ const AssignmentsPage = () => {
   const { user } = use(AuthContext);
   const currentUserEmail = user?.email;
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`${import.meta.env.VITE_URL}/getAllAssignments`)
+  //     .then((res) => setAssignments(res.data))
+  //     .catch((err) => console.log(err))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
+  const [searchText, setSearchText] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  console.log(searchText, difficulty);
+
+  const fetchFilteredAssignments  = async () => {
     setLoading(true);
-    axios
-      .get(`${import.meta.env.VITE_URL}/getAllAssignments`)
-      .then((res) => setAssignments(res.data))
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, []);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_URL}/getAllAssignments?search=${searchText}&difficulty=${difficulty}`
+      );
+      const data = await response.json();
+      setAssignments(data); // ফিল্টার করা assignment গুলো এখানে আসবে
+    } catch (error) {
+      console.error("Failed to fetch assignments:", error);
+    }
+    setLoading(false)
+  };
+
+  useEffect(() => {
+  fetchFilteredAssignments();
+}, [searchText, difficulty]); 
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -33,11 +55,14 @@ const AssignmentsPage = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       customClass: {
-        popup: "bg-white dark:bg-gray-800/90 backdrop-blur-md text-gray-800 dark:text-gray-100 rounded-2xl border border-gray-200/50 dark:border-white/10",
+        popup:
+          "bg-white dark:bg-gray-800/90 backdrop-blur-md text-gray-800 dark:text-gray-100 rounded-2xl border border-gray-200/50 dark:border-white/10",
         title: "text-xl font-semibold",
         htmlContainer: "text-base",
-        confirmButton: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg dark:bg-blue-500/90 dark:hover:bg-blue-600/90 transition-all",
-        cancelButton: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg ml-3 dark:bg-gray-700/90 dark:hover:bg-gray-600/90 dark:text-gray-100 transition-all",
+        confirmButton:
+          "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg dark:bg-blue-500/90 dark:hover:bg-blue-600/90 transition-all",
+        cancelButton:
+          "bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg ml-3 dark:bg-gray-700/90 dark:hover:bg-gray-600/90 dark:text-gray-100 transition-all",
       },
       buttonsStyling: false,
     }).then((result) => {
@@ -45,13 +70,14 @@ const AssignmentsPage = () => {
         axios
           .delete(`${import.meta.env.VITE_URL}/delete-one/${id}`)
           .catch((err) => console.log(err));
-        
+
         Swal.fire({
           title: "Deleted!",
           text: "Assignment has been deleted.",
           icon: "success",
           customClass: {
-            popup: "bg-white dark:bg-gray-800/90 backdrop-blur-md text-gray-800 dark:text-gray-100 rounded-2xl border border-gray-200/50 dark:border-white/10",
+            popup:
+              "bg-white dark:bg-gray-800/90 backdrop-blur-md text-gray-800 dark:text-gray-100 rounded-2xl border border-gray-200/50 dark:border-white/10",
           },
           buttonsStyling: false,
         });
@@ -64,9 +90,10 @@ const AssignmentsPage = () => {
 
   // Group assignments by status (example grouping)
   const groupedAssignments = {
-    active: assignments.filter(ass => !ass.completed),
-    completed: assignments.filter(ass => ass.completed)
+    active: assignments.filter((ass) => !ass.completed),
+    completed: assignments.filter((ass) => ass.completed),
   };
+
 
   return (
     <motion.div
@@ -76,7 +103,13 @@ const AssignmentsPage = () => {
       className="min-h-screen px-4 md:px-8 py-8 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm"
     >
       {/* Header with floating glass effect */}
-      <DashboardHeader assignments = {assignments} />
+      <DashboardHeader
+        assignments={assignments}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        difficulty={difficulty}
+        setDifficulty={setDifficulty}
+      />
 
       {loading ? (
         <LoadingSpinner />
@@ -94,7 +127,7 @@ const AssignmentsPage = () => {
             </h2>
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {groupedAssignments.active.map((assignment) => (
-                <AssignmentCard 
+                <AssignmentCard
                   key={assignment._id}
                   assignment={assignment}
                   user={user}
@@ -118,7 +151,7 @@ const AssignmentsPage = () => {
               </h2>
               <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {groupedAssignments.completed.map((assignment) => (
-                  <AssignmentCard 
+                  <AssignmentCard
                     key={assignment._id}
                     assignment={assignment}
                     user={user}
@@ -137,14 +170,24 @@ const AssignmentsPage = () => {
 };
 
 // Extracted Assignment Card Component for better readability
-const AssignmentCard = ({ assignment, user, currentUserEmail, handleDelete, isCompleted = false }) => {
+const AssignmentCard = ({
+  assignment,
+  user,
+  currentUserEmail,
+  handleDelete,
+  isCompleted = false,
+}) => {
   return (
     <motion.div
       key={assignment._id}
       whileHover={{ y: -5 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 15 }}
-      className={`relative group backdrop-blur-lg bg-white/70 dark:bg-gray-800/60 rounded-2xl overflow-hidden shadow-xs hover:shadow-md border ${isCompleted ? 'border-gray-300/50 dark:border-gray-600/30' : 'border-gray-200/50 dark:border-white/10'} transition-all duration-300`}
+      className={`relative group backdrop-blur-lg bg-white/70 dark:bg-gray-800/60 rounded-2xl overflow-hidden shadow-xs hover:shadow-md border ${
+        isCompleted
+          ? "border-gray-300/50 dark:border-gray-600/30"
+          : "border-gray-200/50 dark:border-white/10"
+      } transition-all duration-300`}
     >
       {/* Thumbnail with glass overlay */}
       <div className="relative h-48 w-full overflow-hidden">
@@ -166,22 +209,31 @@ const AssignmentCard = ({ assignment, user, currentUserEmail, handleDelete, isCo
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1.5 line-clamp-1">
           {assignment.title}
         </h3>
-        
+
         <div className="space-y-2.5 text-sm">
           <p className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <span className={`inline-block w-2 h-2 rounded-full ${
-              assignment.difficulty === 'easy' ? 'bg-emerald-500' : 
-              assignment.difficulty === 'medium' ? 'bg-amber-500' : 'bg-red-500'
-            }`}></span>
-            {assignment.difficulty.charAt(0).toUpperCase() + assignment.difficulty.slice(1)}
+            <span
+              className={`inline-block w-2 h-2 rounded-full ${
+                assignment.difficulty === "easy"
+                  ? "bg-emerald-500"
+                  : assignment.difficulty === "medium"
+                  ? "bg-amber-500"
+                  : "bg-red-500"
+              }`}
+            ></span>
+            {assignment.difficulty.charAt(0).toUpperCase() +
+              assignment.difficulty.slice(1)}
           </p>
-          
+
           <p className="text-gray-700 dark:text-gray-300">
             <span className="font-medium">Marks:</span> {assignment.marks}
           </p>
-          
+
           <p className="text-gray-700 dark:text-gray-300">
-            <span className="font-medium">By:</span> {assignment?.creatorEmail === user?.email ? "You" : assignment?.creatorName}
+            <span className="font-medium">By:</span>{" "}
+            {assignment?.creatorEmail === user?.email
+              ? "You"
+              : assignment?.creatorName}
           </p>
         </div>
 
@@ -191,7 +243,7 @@ const AssignmentCard = ({ assignment, user, currentUserEmail, handleDelete, isCo
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              // onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="p-2 rounded-xl bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 backdrop-blur-md transition-all shadow-xs hover:shadow-sm"
               title="View"
             >
@@ -205,14 +257,16 @@ const AssignmentCard = ({ assignment, user, currentUserEmail, handleDelete, isCo
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
                   className="p-2 rounded-xl bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 backdrop-blur-md transition-all shadow-xs hover:shadow-sm"
                   title="Edit"
                 >
                   <FiEdit className="text-blue-600 dark:text-blue-400 text-lg" />
                 </motion.button>
               </Link>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
