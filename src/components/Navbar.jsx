@@ -106,21 +106,9 @@ export default function Navbar() {
 
         {/* Right Controls */}
         <div className="flex items-center gap-3">
-          <button
-            className="relative p-2 rounded-full hover:bg-white/30 dark:hover:bg-gray-800"
-            title="Notifications"
-          >
-            <FaBell className="text-gray-700 dark:text-gray-300" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
-          </button>
+         
 
-          <button
-            onClick={() => alert("Command Menu Coming Soon")}
-            className="p-2 rounded-full hover:bg-white/30 dark:hover:bg-gray-800"
-            title="Search"
-          >
-            <FaSearch className="text-gray-700 dark:text-gray-300" />
-          </button>
+         
 
           <button
             onClick={() => setDarkMode((prev) => !prev)}
@@ -206,9 +194,6 @@ export default function Navbar() {
           </div>
         </motion.div>
       )}
-
-
-
     </motion.nav>
 {/* Vision Pro–style Bottom Nav (Icons Only, Floating, Glassy) */}
 <div className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[88%] max-w-sm px-4 py-2 bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-gray-300/50 dark:border-white/10 rounded-3xl shadow-xl flex justify-between items-center z-50">

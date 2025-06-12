@@ -38,7 +38,7 @@ const AssignmentsPage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/my-created-assignment/${user?.email}`
+        `${import.meta.env.VITE_URL}/my-created-assignment/${user?.email}`
       );
       const data = await response.json();
       setAssignments(data);
@@ -147,8 +147,6 @@ const AssignmentsPage = () => {
             </div>
           </motion.section>
 
-
-
           {/* Completed Assignments Section */}
           {groupedAssignments.completed.length > 0 && (
             <motion.section
@@ -174,30 +172,28 @@ const AssignmentsPage = () => {
               </div>
             </motion.section>
           )}
-          
         </div>
       )}
-      
-      
-                 {!assignments.length && (
-  <div className="flex items-center justify-center h-[400px] w-full">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-      className="bg-white dark:bg-gray-900 shadow-xl dark:shadow-gray-800 border border-gray-200 dark:border-gray-700 
+
+      {!assignments.length && (
+        <div className="flex items-center justify-center h-[400px] w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
+            className="bg-white dark:bg-gray-900 shadow-xl dark:shadow-gray-800 border border-gray-200 dark:border-gray-700 
                  rounded-2xl p-8 max-w-xl text-center"
-    >
-      <h1 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
-        No Assignments Found
-      </h1>
-      <p className="text-gray-500 dark:text-gray-400">
-        It looks like there are currently no assignments available. Please check back later or create one!
-      </p>
-    </motion.div>
-  </div>
-)}
-        
+          >
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
+              No Assignments Found
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400">
+              It looks like there are currently no assignments available. Please
+              check back later or create one!
+            </p>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 };
