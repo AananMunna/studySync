@@ -21,12 +21,6 @@ export default function Footer() {
           <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs mx-auto lg:mx-0">
             Next-gen study platform to sync, submit, and score your group learning seamlessly.
           </p>
-          <Link
-            to="/assignments"
-            className="inline-block mt-4 bg-indigo-600 dark:bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition"
-          >
-            Get Started
-          </Link>
         </div>
 
         {/* Navigation */}

@@ -3,8 +3,17 @@ import { useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { Link } from "react-router";
 
-const DashboardHeader = ({ assignments, searchText,setSearchText,difficulty,setDifficulty }) => {
+const DashboardHeader = ({
+  assignments,
+  searchText,
+  setSearchText,
+  difficulty,
+  setDifficulty,
+  handleMyAssignmentFilter,
+  fetchFilteredAssignments
+}) => {
 
+  const [click, setClick] = useState(true);
 
   return (
     <motion.header
@@ -19,8 +28,24 @@ const DashboardHeader = ({ assignments, searchText,setSearchText,difficulty,setD
           <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 dark:text-white">
             StudySync Dashboard
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            {assignments.length} assignments found
+          <p
+            className={`text-sm sm:text-base font-semibold flex items-center gap-1 transition-all duration-300 
+    ${
+      assignments.length === 0
+        ? "text-red-500 animate-pulse"
+        : "bg-gradient-to-r from-green-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent"
+    }
+  `}
+          >
+            {assignments.length === 0 ? (
+              <>
+                😢 <span>No assignments found</span>
+              </>
+            ) : (
+              <>
+                🎯 <span>{assignments.length} assignments found</span>
+              </>
+            )}
           </p>
         </div>
 
@@ -55,6 +80,17 @@ const DashboardHeader = ({ assignments, searchText,setSearchText,difficulty,setD
             <option value="medium">🟡 Medium</option>
             <option value="hard">🔴 Hard</option>
           </select>
+
+          {/* My Assignments Button */}
+          <button
+          onClick={()=> {
+            setClick(!click),
+            click ? handleMyAssignmentFilter(): fetchFilteredAssignments()
+          }}
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all active:scale-95"
+          >
+            📂 <span className="hidden sm:inline">{click ? 'My Assignments': ' View others'}</span>
+          </button>
 
           {/* New Assignment Button */}
           <Link

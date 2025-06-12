@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import { FiEdit, FiEye, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
 import Swal from "sweetalert2";
@@ -14,36 +14,44 @@ const AssignmentsPage = () => {
   const { user } = use(AuthContext);
   const currentUserEmail = user?.email;
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios
-  //     .get(`${import.meta.env.VITE_URL}/getAllAssignments`)
-  //     .then((res) => setAssignments(res.data))
-  //     .catch((err) => console.log(err))
-  //     .finally(() => setLoading(false));
-  // }, []);
-
   const [searchText, setSearchText] = useState("");
   const [difficulty, setDifficulty] = useState("");
   console.log(searchText, difficulty);
 
-  const fetchFilteredAssignments  = async () => {
+  const fetchFilteredAssignments = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_URL}/getAllAssignments?search=${searchText}&difficulty=${difficulty}`
+        `${
+          import.meta.env.VITE_URL
+        }/getAllAssignments?search=${searchText}&difficulty=${difficulty}`
       );
       const data = await response.json();
-      setAssignments(data); // ফিল্টার করা assignment গুলো এখানে আসবে
+      setAssignments(data);
     } catch (error) {
       console.error("Failed to fetch assignments:", error);
     }
-    setLoading(false)
+    setLoading(false);
+  };
+
+  const handleMyAssignmentFilter = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/my-created-assignment/${user?.email}`
+      );
+      const data = await response.json();
+      setAssignments(data);
+    } catch (error) {
+      console.error("Failed to fetch assignments:", error);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
-  fetchFilteredAssignments();
-}, [searchText, difficulty]); 
+    fetchFilteredAssignments();
+    handleMyAssignmentFilter();
+  }, [searchText, difficulty]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -94,7 +102,6 @@ const AssignmentsPage = () => {
     completed: assignments.filter((ass) => ass.completed),
   };
 
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -109,6 +116,8 @@ const AssignmentsPage = () => {
         setSearchText={setSearchText}
         difficulty={difficulty}
         setDifficulty={setDifficulty}
+        handleMyAssignmentFilter={handleMyAssignmentFilter}
+        fetchFilteredAssignments={fetchFilteredAssignments}
       />
 
       {loading ? (
@@ -138,6 +147,8 @@ const AssignmentsPage = () => {
             </div>
           </motion.section>
 
+
+
           {/* Completed Assignments Section */}
           {groupedAssignments.completed.length > 0 && (
             <motion.section
@@ -163,8 +174,30 @@ const AssignmentsPage = () => {
               </div>
             </motion.section>
           )}
+          
         </div>
       )}
+      
+      
+                 {!assignments.length && (
+  <div className="flex items-center justify-center h-[400px] w-full">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
+      className="bg-white dark:bg-gray-900 shadow-xl dark:shadow-gray-800 border border-gray-200 dark:border-gray-700 
+                 rounded-2xl p-8 max-w-xl text-center"
+    >
+      <h1 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-100 mb-4">
+        No Assignments Found
+      </h1>
+      <p className="text-gray-500 dark:text-gray-400">
+        It looks like there are currently no assignments available. Please check back later or create one!
+      </p>
+    </motion.div>
+  </div>
+)}
+        
     </motion.div>
   );
 };
