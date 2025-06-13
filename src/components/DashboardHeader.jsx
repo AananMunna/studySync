@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FiPlus, FiSearch, FiFilter, FiX } from "react-icons/fi";
+import { FiPlus, FiSearch, FiFilter, FiX, FiRefreshCw } from "react-icons/fi";
 import { MdPeopleOutline, MdPersonOutline, MdOutlineDashboard } from "react-icons/md";
 import { Link } from "react-router";
 import { Tooltip } from "react-tooltip";
@@ -43,7 +43,7 @@ const DashboardHeader = ({
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`sticky top-0 z-50 bg-white/90 dark:bg-gray-900/95 border-b border-white/20 shadow-sm ${
+        className={` sticky top-0 z-10 bg-white/90 dark:bg-gray-900/95 border-b border-white/20 shadow-sm ${
           hasScrolled ? "py-3" : "py-4 sm:py-6"
         } px-4 sm:px-6 backdrop-blur-lg transition-all duration-300`}
       >
@@ -52,10 +52,11 @@ const DashboardHeader = ({
             {/* Title and count */}
             <div className="flex items-center gap-4">
               <Link
+              // onClick={fetchFilteredAssignments}
                 to="/"
                 className="flex items-center gap-2 group"
                 data-tooltip-id="tooltip"
-                data-tooltip-content="Return to homepage"
+                data-tooltip-content="Home"
               >
                 <motion.div
                   whileHover={{ rotate: 10 }}
@@ -167,6 +168,18 @@ const DashboardHeader = ({
                 </span>
               </motion.button>
 
+              {/* Refresh Button */}
+<motion.button
+  whileTap={{ rotate: 360, scale: 0.95 }}
+  whileHover={{ scale: 1.05 }}
+  onClick={fetchFilteredAssignments}
+  className="p-2 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur border border-gray-300/40 dark:border-white/20 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-white shadow-md hover:shadow-lg transition-all"
+  data-tooltip-id="tooltip"
+  data-tooltip-content="Refresh assignments"
+>
+  <FiRefreshCw className="text-lg" />
+</motion.button>
+
               {/* Create New Assignment Button */}
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
@@ -214,7 +227,7 @@ const DashboardHeader = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-md px-4 py-3"
+            className="md:hidden sticky top-16 left-0 right-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-md px-4 py-3"
           >
             <div className="flex flex-col gap-3">
               {/* Mobile Search Box */}
@@ -236,6 +249,7 @@ const DashboardHeader = ({
                   </button>
                 )}
               </div>
+              
 
               <div className="flex gap-3">
                 {/* Mobile Difficulty Filter */}

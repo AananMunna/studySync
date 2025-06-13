@@ -96,6 +96,7 @@ const AssignmentsPage = () => {
     });
   };
 
+
   // Group assignments by status (example grouping)
   const groupedAssignments = {
     active: assignments.filter((ass) => !ass.completed),

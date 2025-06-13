@@ -19,11 +19,11 @@ import { ThemeContext } from "../context/ThemeContext";
 import ProfileDropdown from "./ProfileDropdown";
 import { motion } from "framer-motion";
 
-export default function Navbar() {
+export default function Navbar(isAssignmentsPage) {
   const { darkMode, setDarkMode } = useContext(ThemeContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollRotation, setScrollRotation] = useState(0);
-  const { user } = useContext(AuthContext);
+  const { user,dashboardUIFire } = useContext(AuthContext);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -60,13 +60,17 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
 
+  console.log(isAssignmentsPage.isAssignmentsPage);
+
+
+
   return (
     <>
     <motion.nav
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/60 dark:bg-black/40 border-b border-white/20 dark:border-gray-700 shadow-sm"
+      className={` top-0 left-0 right-0 ${isAssignmentsPage.isAssignmentsPage ? 'z-0 sticky ' : 'z-50 fixed'}  backdrop-blur-md bg-white/60 dark:bg-black/40 border-b border-white/20 dark:border-gray-700 shadow-sm`}
     >
       <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
         {/* Logo + rotation */}

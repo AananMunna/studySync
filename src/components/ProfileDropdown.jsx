@@ -53,7 +53,7 @@ const ProfileDropdown = ({ user }) => {
   {/* Avatar Button */}
   <div
     onClick={() => setOpen(!open)}
-    className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center cursor-pointer border-2 border-white dark:border-emerald-500 hover:scale-105 transition-transform duration-200 shadow-md"
+    className="w-10 h-10 z-50 rounded-full bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center cursor-pointer border-2 border-white dark:border-emerald-500 hover:scale-105 transition-transform duration-200 shadow-md"
   >
     {user.photoURL ? (
       <img
