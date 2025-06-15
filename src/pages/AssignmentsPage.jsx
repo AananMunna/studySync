@@ -38,7 +38,11 @@ const AssignmentsPage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_URL}/my-created-assignment/${user?.email}`
+        `${import.meta.env.VITE_URL}/my-created-assignment/${user?.email}`,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      }
       );
       const data = await response.json();
       setAssignments(data);
@@ -50,7 +54,7 @@ const AssignmentsPage = () => {
 
   useEffect(() => {
     fetchFilteredAssignments();
-    handleMyAssignmentFilter();
+    // handleMyAssignmentFilter();
   }, [searchText, difficulty]);
 
   const handleDelete = (id) => {

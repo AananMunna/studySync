@@ -13,7 +13,11 @@ const MySubmittedAssignments = () => {
   const { user } = use(AuthContext);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_URL}/my-assignment/${user?.email}`)
+    axios.get(`${import.meta.env.VITE_URL}/my-assignment/${user?.email}`,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      })
       .then(response => {
         setSubmittedAssignments(response.data);
         setLoading(false);

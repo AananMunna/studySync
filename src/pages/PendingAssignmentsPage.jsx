@@ -62,7 +62,11 @@ const PendingAssignmentsPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_URL}/pending-assignment`)
+      .get(`${import.meta.env.VITE_URL}/pending-assignment`,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      })
       .then((response) => {
         SetPendingAssignments(response.data);
         setLoading(false);

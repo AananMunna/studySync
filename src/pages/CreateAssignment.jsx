@@ -159,21 +159,24 @@ const CreateAssignment = () => {
             />
           </div>
 
-          {/* Description */}
-          <div className="space-y-2">
-            <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-              <FiFileText className="mr-2" />
-              Description
-            </label>
-            <textarea
-              required
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              rows={4}
-              placeholder="Detailed assignment description"
-            />
-          </div>
+           {/* Description */}
+  <div className="space-y-2">
+    <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+      <FiFileText className="mr-2" />
+      Description
+    </label>
+    <textarea
+      required
+      value={desc}
+      onChange={(e) => setDesc(e.target.value)}
+      className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+      rows={4}
+      placeholder="Detailed assignment description"
+    />
+    {desc.length > 0 && desc.length < 20 && (
+      <p className="text-red-500 text-sm">📝 "Please write a bit more! The description should be at least 20 characters long so others can clearly understand your assignment."</p>
+    )}
+  </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Marks */}
