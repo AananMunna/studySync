@@ -51,6 +51,10 @@ const UpdateAssignment = () => {
         dueDate: cleanData.dueDate.toISOString(),
         email: user?.email,
         creator: user?.displayName,
+      },{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
       })
       .then(() => {
         Swal.fire("✅ Updated!", "Assignment updated successfully.", "success");

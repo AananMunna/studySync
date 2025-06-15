@@ -26,12 +26,16 @@ const PendingAssignmentsPage = () => {
   const handleSubmit = () => {
     selected.givenMark = givenMark;
     selected.feedback = feedback;
-    selected.examinerEmail = user.email;
-    selected.examiner = user.displayName;
+    selected.examinerEmail = user?.email;
+    selected.examiner = user?.displayName;
     selected.status = "reviewed";
 
     axios
-      .put(`${import.meta.env.VITE_URL}/give-mark/${selected._id}`, selected)
+      .put(`${import.meta.env.VITE_URL}/give-mark/${selected._id}`, selected,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      })
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           Swal.fire({

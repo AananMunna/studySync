@@ -52,7 +52,11 @@ const CreateAssignment = () => {
         creatorName: user?.displayName
       };
       
-      await axios.post(`${import.meta.env.VITE_URL}/createAssignment`, data);
+      await axios.post(`${import.meta.env.VITE_URL}/createAssignment`, data,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      });
       
       setSuccess(true);
       Swal.fire({

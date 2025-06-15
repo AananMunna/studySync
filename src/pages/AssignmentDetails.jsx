@@ -38,7 +38,11 @@ const AssignmentDetails = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_URL}/submitAssignment`,
-        payload
+        payload,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      }
       );
 
       if (res.data?.insertedId || res.data?.acknowledged) {

@@ -80,7 +80,11 @@ const AssignmentsPage = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${import.meta.env.VITE_URL}/delete-one/${id}`)
+          .delete(`${import.meta.env.VITE_URL}/delete-one/${id}`,{
+        headers: {
+          authorization: `Bearer ${user?.accessToken}`
+        }
+      })
           .catch((err) => console.log(err));
 
         Swal.fire({
