@@ -95,7 +95,7 @@ export default function Navbar(isAssignmentsPage) {
                 textShadow: "0 2px 6px rgba(0, 255, 255, 0.15)",
               }}
             >
-              📘
+              📚
             </motion.span>
 
             {/* StudySync Text with soft shimmer on hover */}

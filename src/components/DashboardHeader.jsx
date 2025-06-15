@@ -1,7 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { FiPlus, FiSearch, FiFilter, FiX, FiRefreshCw } from "react-icons/fi";
-import { MdPeopleOutline, MdPersonOutline, MdOutlineDashboard } from "react-icons/md";
+import {
+  MdPeopleOutline,
+  MdPersonOutline,
+  MdOutlineDashboard,
+} from "react-icons/md";
 import { Link } from "react-router";
 import { Tooltip } from "react-tooltip";
 
@@ -51,24 +55,20 @@ const DashboardHeader = ({
           <div className="flex items-center justify-between">
             {/* Title and count */}
             <div className="flex items-center gap-4">
-              <Link
-              // onClick={fetchFilteredAssignments}
-                to="/"
+              <div
                 className="flex items-center gap-2 group"
-                data-tooltip-id="tooltip"
-                data-tooltip-content="Home"
               >
                 <motion.div
                   whileHover={{ rotate: 10 }}
                   whileTap={{ scale: 0.9 }}
                   className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-md"
                 >
-                  <MdOutlineDashboard className="text-2xl text-white" />
+                  📚
                 </motion.div>
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  StudySync
+                  Dashboard
                 </h1>
-              </Link>
+              </div>
 
               <div className="hidden md:block h-6 w-px bg-gray-300 dark:bg-gray-600" />
 
@@ -128,7 +128,11 @@ const DashboardHeader = ({
               </motion.div>
 
               {/* Difficulty Filter */}
-              <div className="relative group" data-tooltip-id="tooltip" data-tooltip-content="Filter by difficulty">
+              <div
+                className="relative group"
+                data-tooltip-id="tooltip"
+                data-tooltip-content="Filter by difficulty"
+              >
                 <select
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
@@ -148,7 +152,9 @@ const DashboardHeader = ({
                 whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   setIsMyAssignments(!isMyAssignments);
-                  isMyAssignments ? fetchFilteredAssignments() : handleMyAssignmentFilter();
+                  isMyAssignments
+                    ? fetchFilteredAssignments()
+                    : handleMyAssignmentFilter();
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium shadow-sm hover:shadow-md transition-all ${
                   isMyAssignments
@@ -156,7 +162,11 @@ const DashboardHeader = ({
                     : "bg-white/70 dark:bg-gray-800/70 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white"
                 }`}
                 data-tooltip-id="tooltip"
-                data-tooltip-content={isMyAssignments ? "View all assignments" : "View my assignments"}
+                data-tooltip-content={
+                  isMyAssignments
+                    ? "View all assignments"
+                    : "View my assignments"
+                }
               >
                 {isMyAssignments ? (
                   <MdPersonOutline className="text-lg" />
@@ -169,19 +179,22 @@ const DashboardHeader = ({
               </motion.button>
 
               {/* Refresh Button */}
-<motion.button
-  whileTap={{ rotate: 360, scale: 0.95 }}
-  whileHover={{ scale: 1.05 }}
-  onClick={fetchFilteredAssignments}
-  className="p-2 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur border border-gray-300/40 dark:border-white/20 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-white shadow-md hover:shadow-lg transition-all"
-  data-tooltip-id="tooltip"
-  data-tooltip-content="Refresh assignments"
->
-  <FiRefreshCw className="text-lg" />
-</motion.button>
+              <motion.button
+                whileTap={{ rotate: 360, scale: 0.95 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={fetchFilteredAssignments}
+                className="p-2 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur border border-gray-300/40 dark:border-white/20 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-white shadow-md hover:shadow-lg transition-all"
+                data-tooltip-id="tooltip"
+                data-tooltip-content="Refresh assignments"
+              >
+                <FiRefreshCw className="text-lg" />
+              </motion.button>
 
               {/* Create New Assignment Button */}
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 <Link
                   to="/create"
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium shadow-sm hover:shadow-md transition-all"
@@ -249,7 +262,6 @@ const DashboardHeader = ({
                   </button>
                 )}
               </div>
-              
 
               <div className="flex gap-3">
                 {/* Mobile Difficulty Filter */}
@@ -282,7 +294,9 @@ const DashboardHeader = ({
               <button
                 onClick={() => {
                   setIsMyAssignments(!isMyAssignments);
-                  isMyAssignments ? fetchFilteredAssignments() : handleMyAssignmentFilter();
+                  isMyAssignments
+                    ? fetchFilteredAssignments()
+                    : handleMyAssignmentFilter();
                 }}
                 className={`flex items-center justify-center gap-2 w-full px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition-all ${
                   isMyAssignments

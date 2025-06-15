@@ -6,14 +6,17 @@ import studyAnimation from "../assets/study2.json";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 px-6 py-28 md:py-36 text-gray-900 dark:text-white transition-colors duration-500">
-      
+    <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 py-20 md:py-36 text-gray-900 dark:text-white transition-colors duration-500">
       {/* Layered Glow Effects */}
-      <div className="absolute top-[-80px] left-[-60px] w-[400px] h-[400px] rounded-full bg-indigo-400 dark:bg-indigo-600 opacity-10 blur-[160px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-[-100px] right-[-60px] w-[300px] h-[300px] rounded-full bg-purple-400 dark:bg-purple-600 opacity-10 blur-[160px] pointer-events-none z-0"></div>
+      <div className="absolute top-[-80px] left-[-60px] w-[400px] h-[400px] rounded-full bg-indigo-400 dark:bg-indigo-600 opacity-10 blur-[120px] md:blur-[160px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-[-100px] right-[-60px] w-[300px] h-[300px] rounded-full bg-purple-400 dark:bg-purple-600 opacity-10 blur-[120px] md:blur-[160px] pointer-events-none z-0"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-16">
-        
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="relative z-10 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-16"
+      >
         {/* Left Text Section */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
@@ -21,17 +24,29 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
           className="text-center md:text-left space-y-7 max-w-xl"
         >
+          {/* Tagline Badge */}
+          <div className="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 text-sm rounded-full mb-1">
+            📚 Empowering MERN Stack Learners
+          </div>
+
+          {/* Hero Heading */}
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
             <span className="inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
               Group Study,
             </span>{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">Simplified</span>.
+            <span className="text-indigo-600 dark:text-indigo-400 underline decoration-wavy decoration-purple-400 underline-offset-4">
+              Simplified
+            </span>
+            .
           </h1>
 
+          {/* Sub Text */}
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-            Submit, evaluate, and collaborate on assignments with friends. Perfect for MERN stack learners sharpening real-world dev skills.
+            Submit, evaluate, and collaborate on assignments with friends.
+            Perfect for MERN stack learners sharpening real-world dev skills.
           </p>
 
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -40,13 +55,13 @@ export default function HeroSection() {
           >
             <Link
               to="/assignments"
-              className="px-6 py-3 text-white font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg hover:scale-[1.04] active:scale-[0.98] transition-transform duration-300"
+              className="px-6 py-3 text-white font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg hover:scale-[1.04] active:scale-[0.98] focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300"
             >
               Explore Assignments
             </Link>
             <Link
               to="/create"
-              className="px-6 py-3 border-2 border-indigo-500 dark:border-indigo-400 text-indigo-600 dark:text-indigo-300 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors"
+              className="px-6 py-3 border-2 border-indigo-500 dark:border-indigo-400 text-indigo-600 dark:text-indigo-300 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900 focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all"
             >
               Get Started
             </Link>
@@ -58,10 +73,15 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 1, ease: "easeInOut" }}
-          className="w-full max-w-md hover:scale-[1.02] transition-transform duration-500"
+          className="w-[80%] max-w-xs sm:max-w-sm md:max-w-md mx-auto md:mx-0 hover:scale-[1.02] transition-transform duration-500"
         >
           <Lottie animationData={studyAnimation} loop={true} />
         </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-gray-500 dark:text-gray-300 animate-bounce">
+        ↓ Scroll to explore
       </div>
     </section>
   );

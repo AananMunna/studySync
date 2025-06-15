@@ -6,7 +6,15 @@ import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthProvider";
 import axios from "axios";
-import { FiArrowLeft, FiCalendar, FiImage, FiBook, FiFileText, FiAward, FiBarChart2 } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiCalendar,
+  FiImage,
+  FiBook,
+  FiFileText,
+  FiAward,
+  FiBarChart2,
+} from "react-icons/fi";
 
 const CreateAssignment = () => {
   const [title, setTitle] = useState("");
@@ -18,8 +26,7 @@ const CreateAssignment = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
 
   const { user } = use(AuthContext);
 
@@ -41,29 +48,29 @@ const CreateAssignment = () => {
     }
 
     try {
-      const data = { 
-        title, 
-        desc, 
-        marks, 
-        thumbnail, 
-        difficulty, 
+      const data = {
+        title,
+        desc,
+        marks,
+        thumbnail,
+        difficulty,
         dueDate,
         creatorEmail: user?.email,
-        creatorName: user?.displayName
+        creatorName: user?.displayName,
       };
-      
-      await axios.post(`${import.meta.env.VITE_URL}/createAssignment`, data,{
+
+      await axios.post(`${import.meta.env.VITE_URL}/createAssignment`, data, {
         headers: {
-          authorization: `Bearer ${user?.accessToken}`
-        }
+          authorization: `Bearer ${user?.accessToken}`,
+        },
       });
-      
+
       setSuccess(true);
       Swal.fire({
         title: "Assignment Created",
         text: "Your assignment has been successfully created",
         icon: "success",
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: "rgba(255, 255, 255, 0.9)",
         backdrop: `
           rgba(0, 0, 0, 0.5)
           url("/images/nyan-cat.gif")
@@ -71,7 +78,7 @@ const CreateAssignment = () => {
           no-repeat
         `,
         showConfirmButton: false,
-        timer: 2000
+        timer: 2000,
       });
       navigate("/assignments");
 
@@ -163,24 +170,28 @@ const CreateAssignment = () => {
             />
           </div>
 
-           {/* Description */}
-  <div className="space-y-2">
-    <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-      <FiFileText className="mr-2" />
-      Description
-    </label>
-    <textarea
-      required
-      value={desc}
-      onChange={(e) => setDesc(e.target.value)}
-      className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-      rows={4}
-      placeholder="Detailed assignment description"
-    />
-    {desc.length > 0 && desc.length < 20 && (
-      <p className="text-red-500 text-sm">📝 "Please write a bit more! The description should be at least 20 characters long so others can clearly understand your assignment."</p>
-    )}
-  </div>
+          {/* Description */}
+          <div className="space-y-2">
+            <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+              <FiFileText className="mr-2" />
+              Description
+            </label>
+            <textarea
+              required
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              rows={4}
+              placeholder="Detailed assignment description"
+            />
+            {desc.length > 0 && desc.length < 20 && (
+              <p className="text-red-500 text-sm">
+                📝 "Please write a bit more! The description should be at least
+                20 characters long so others can clearly understand your
+                assignment."
+              </p>
+            )}
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Marks */}
@@ -273,8 +284,18 @@ const CreateAssignment = () => {
                 exit={{ opacity: 0 }}
                 className="px-4 py-3 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 rounded-xl flex items-center"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
                 {error}
               </motion.div>
@@ -289,8 +310,18 @@ const CreateAssignment = () => {
                 exit={{ opacity: 0 }}
                 className="px-4 py-3 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-xl flex items-center"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 Assignment created successfully!
               </motion.div>
@@ -302,23 +333,39 @@ const CreateAssignment = () => {
             type="submit"
             disabled={isSubmitting}
             className={`w-full py-4 px-6 rounded-xl font-medium text-white transition-all duration-300 ${
-              isSubmitting 
-                ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl'
+              isSubmitting
+                ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
             }`}
             whileHover={!isSubmitting ? { scale: 1.02 } : {}}
             whileTap={!isSubmitting ? { scale: 0.98 } : {}}
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Creating...
               </span>
             ) : (
-              'Create Assignment'
+              "Create Assignment"
             )}
           </motion.button>
         </form>

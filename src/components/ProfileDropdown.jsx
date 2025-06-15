@@ -33,7 +33,6 @@ const ProfileDropdown = ({ user }) => {
           icon: "success",
           draggable: true,
         });
-        // // Optional: redirect to login or homepage
         navigate("/");
       })
       .catch((error) => {

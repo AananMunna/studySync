@@ -5,28 +5,35 @@ const features = [
   {
     icon: <FaUsers />,
     title: "Real-Time Collaboration",
-    description: "Team up with classmates to complete assignments simultaneously in real time.",
+    description:
+      "Team up with classmates to complete assignments simultaneously in real time.",
   },
   {
     icon: <FaRobot />,
     title: "AI Auto Grading",
-    description: "Smart evaluation gives instant grades with detailed feedback and suggestions.",
+    description:
+      "Smart evaluation gives instant grades with detailed feedback and suggestions.",
   },
   {
     icon: <FaLock />,
     title: "Secure Login",
-    description: "Login with Google or email securely using encrypted Firebase Authentication.",
+    description:
+      "Login with Google or email securely using encrypted Firebase Authentication.",
   },
   {
     icon: <FaChartLine />,
     title: "Progress Analytics",
-    description: "Visual charts to track assignment scores, ranking, and activity logs.",
+    description:
+      "Visual charts to track assignment scores, ranking, and activity logs.",
   },
 ];
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="relative bg-white dark:bg-gray-950 px-6 py-24 transition-colors duration-500">
+    <section
+      id="features"
+      className="relative bg-white dark:bg-gray-950 px-6 py-24 transition-colors duration-500"
+    >
       {/* Background Gradient Blur */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-indigo-500 opacity-20 blur-3xl rounded-full -z-10" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-500 opacity-20 blur-3xl rounded-full -z-10" />
@@ -44,7 +51,8 @@ export default function FeaturesSection() {
             Supercharge Your Group Study Experience
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg">
-            Explore our smart tools designed to boost your collaboration, productivity, and learning — all in one place.
+            Explore our smart tools designed to boost your collaboration,
+            productivity, and learning — all in one place.
           </p>
         </motion.div>
 

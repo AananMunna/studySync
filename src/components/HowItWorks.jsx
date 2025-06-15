@@ -1,11 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import {
-  FaFileUpload,
-  FaUsers,
-  FaCheckCircle,
-  FaRocket,
-} from "react-icons/fa";
+import { FaFileUpload, FaUsers, FaCheckCircle, FaRocket } from "react-icons/fa";
 
 const steps = [
   {
@@ -43,19 +38,18 @@ export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(1);
   const [progressHeight, setProgressHeight] = useState(0);
 
-  // Scroll handler to set active step and progress bar height
   useEffect(() => {
     function onScroll() {
       if (!containerRef.current) return;
 
       const containerRect = containerRef.current.getBoundingClientRect();
-      const totalHeight = containerRef.current.scrollHeight - window.innerHeight;
+      const totalHeight =
+        containerRef.current.scrollHeight - window.innerHeight;
       const scrolled = window.scrollY - (containerRef.current.offsetTop || 0);
       const scrollPercent = Math.min(Math.max(scrolled / totalHeight, 0), 1);
 
       setProgressHeight(scrollPercent * containerRef.current.scrollHeight);
 
-      // Find current step in view
       const stepElements = containerRef.current.querySelectorAll(".step-item");
       let currentStep = 1;
       stepElements.forEach((el, i) => {
@@ -72,7 +66,6 @@ export default function HowItWorks() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Pulse animation for glowing dots
   const pulseVariants = {
     pulse: {
       boxShadow: [
@@ -88,7 +81,6 @@ export default function HowItWorks() {
     },
   };
 
-  // Icon floating animation
   const iconVariants = {
     float: {
       y: [0, -6, 0],
@@ -100,14 +92,16 @@ export default function HowItWorks() {
     },
   };
 
-  // Scroll to step function (clickable dots)
   const scrollToStep = (index) => {
     if (!containerRef.current) return;
     const stepElements = containerRef.current.querySelectorAll(".step-item");
     const target = stepElements[index];
     if (target) {
       window.scrollTo({
-        top: window.scrollY + target.getBoundingClientRect().top - window.innerHeight / 4,
+        top:
+          window.scrollY +
+          target.getBoundingClientRect().top -
+          window.innerHeight / 4,
         behavior: "smooth",
       });
     }
@@ -135,22 +129,22 @@ export default function HowItWorks() {
           viewport={{ once: true }}
           className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300"
         >
-          Follow these simple steps to get started and make the most of your group
-          study experience.
+          Follow these simple steps to get started and make the most of your
+          group study experience.
         </motion.p>
       </div>
 
       <div
         ref={containerRef}
         className="relative max-w-5xl mx-auto"
-        style={{ minHeight: "600px" }} // ensure enough height for scroll demo
+        style={{ minHeight: "600px" }}
       >
-        {/* Timeline static line */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4px] h-full bg-indigo-200 dark:bg-indigo-500 z-0 rounded-full" />
+        {/* Timeline background bar */}
+        <div className="absolute top-0 left-6 md:left-1/2 md:transform md:-translate-x-1/2 w-[4px] h-full bg-indigo-200 dark:bg-indigo-500 z-0 rounded-full" />
 
-        {/* Progress bar fill */}
+        {/* Progress fill */}
         <motion.div
-          className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[4px] bg-indigo-600 dark:bg-indigo-400 rounded-full z-10"
+          className="absolute top-0 left-6 md:left-1/2 md:transform md:-translate-x-1/2 w-[4px] bg-indigo-600 dark:bg-indigo-400 rounded-full z-10"
           style={{ height: progressHeight }}
           layout
         />
@@ -170,13 +164,13 @@ export default function HowItWorks() {
                   index % 2 !== 0 ? "md:flex-row-reverse" : ""
                 } md:gap-10`}
               >
-                {/* Dot + number with glow + tooltip + clickable */}
+                {/* Dot */}
                 <motion.div
                   onClick={() => scrollToStep(index)}
                   title={`Step ${step.id}: ${step.title}`}
                   variants={pulseVariants}
                   animate="pulse"
-                  className={`cursor-pointer absolute left-1/2 transform -translate-x-1/2 top-0 w-8 h-8 rounded-full border-4 border-white dark:border-gray-900 z-30 flex items-center justify-center
+                  className={`cursor-pointer absolute top-0 left-6 md:left-1/2 md:transform md:-translate-x-1/2 w-8 h-8 rounded-full border-4 border-white dark:border-gray-900 z-30 flex items-center justify-center
                     ${
                       isActive
                         ? "bg-indigo-600 dark:bg-indigo-400 shadow-[0_0_10px_4px_rgba(99,102,241,0.8)]"
@@ -185,12 +179,15 @@ export default function HowItWorks() {
                   `}
                 >
                   <motion.span
-                    className={`text-white dark:text-gray-900 font-bold select-none`}
+                    className="text-white dark:text-gray-900 font-bold select-none"
                     animate={{
                       scale: isActive ? [1, 1.3, 1] : 1,
                       opacity: isActive ? [1, 0.7, 1] : 1,
                     }}
-                    transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
+                    transition={{
+                      repeat: isActive ? Infinity : 0,
+                      duration: 2,
+                    }}
                   >
                     {step.id}
                   </motion.span>
@@ -198,11 +195,10 @@ export default function HowItWorks() {
 
                 {/* Content */}
                 <div
-                  className={`md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-3 px-6 md:px-0 mt-6
-                    ${isActive ? "text-indigo-700 dark:text-indigo-300" : ""}
-                  `}
+                  className={`md:w-1/2  flex flex-col items-center md:items-start text-center md:text-left space-y-3 px-6 md:px-0 pt-10 md:pt-0 ${
+                    isActive ? "text-indigo-700 dark:text-indigo-300" : ""
+                  }`}
                 >
-                  {/* Animated Icon */}
                   <motion.div
                     variants={iconVariants}
                     animate="float"
@@ -214,7 +210,7 @@ export default function HowItWorks() {
                   >
                     {step.icon}
                   </motion.div>
-                  <h3 className={`text-2xl mx-5 font-bold`}>{step.title}</h3>
+                  <h3 className="text-2xl mx-5 font-bold">{step.title}</h3>
                   <p
                     className={`text-gray-600 mx-5 dark:text-gray-300 ${
                       isActive ? "font-semibold" : ""
