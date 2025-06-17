@@ -1,24 +1,27 @@
 import { use, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBookOpen, FaChartLine, FaUserGraduate, FaLink, FaStickyNote } from "react-icons/fa";
+import {
+  FaBookOpen,
+  FaChartLine,
+  FaUserGraduate,
+} from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useLoaderData, useNavigate } from "react-router";
 import SubmitAssignmentForm from "./SubmitAssignmentForm";
 import { AuthContext } from "../context/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { formatDistanceToNow } from 'date-fns';
+
 
 const AssignmentDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [assignment, setAssignment] = useState();
-  const [isSticky, setIsSticky] = useState(false);
   const [disable, setDisable] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-
+// console.log(assignment?.dueDate);
   const { data } = useLoaderData();
-  useEffect(() => {
-    setAssignment(data);
-  }, [data]);
+  useEffect(() => setAssignment(data), [data]);
 
   const { user } = use(AuthContext);
   const navigate = useNavigate();
@@ -38,32 +41,21 @@ const AssignmentDetails = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_URL}/submitAssignment`,
-        payload,{
-        headers: {
-          authorization: `Bearer ${user?.accessToken}`
-        }
-      }
+        payload,
+        { headers: { authorization: `Bearer ${user?.accessToken}` } }
       );
 
       if (res.data?.insertedId || res.data?.acknowledged) {
         Swal.fire({
           icon: "success",
           title: "Submitted!",
-          text: "Your assignment was successfully submitted 🎉",
+          text: "Assignment submitted successfully 🎉",
           confirmButtonColor: "#22c55e",
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdrop: `
-            rgba(10, 10, 10, 0.7)
-            url("/images/nyan-cat.gif")
-            center top
-            no-repeat
-          `,
-          color: '#fff'
+          background: "#1f1f1f",
+          color: "#fff",
         });
         setDisable(true);
-      } else {
-        throw new Error("Something went wrong!");
-      }
+      } else throw new Error("Something went wrong!");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -72,211 +64,130 @@ const AssignmentDetails = () => {
           error?.response?.data?.message ||
           "Failed to submit the assignment 😢",
         confirmButtonColor: "#ef4444",
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdrop: `
-          rgba(10, 10, 10, 0.7)
-          center top
-          no-repeat
-        `,
-        color: '#fff'
+        background: "#1f1f1f",
+        color: "#fff",
       });
     }
     navigate("/submissions");
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsSticky(scrollY > 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 py-12 px-4 sm:px-6">
-      {/* Floating particles background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gray-200/50 dark:bg-white/10"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-            }}
-            animate={{
-              y: [0, Math.random() * 100 - 50],
-              x: [0, Math.random() * 100 - 50],
-              opacity: [0.8, 0.2, 0.8],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black py-12 px-4">
+      {/* Hero */}
       <motion.div
-        className="max-w-5xl mx-auto rounded-3xl overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-xl backdrop-blur-xl border border-white/10"
       >
-        {/* Glass morphism container */}
-        <div className="backdrop-blur-xl bg-white/70 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl shadow-xl dark:shadow-2xl overflow-hidden">
-          {/* Hero section with gradient */}
-          <div className="relative">
-            <motion.img
-              src={assignment?.thumbnail}
-              alt="Assignment Thumbnail"
-              className="w-full h-64 sm:h-80 object-cover object-center"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/30 to-transparent dark:from-gray-950/90 dark:via-gray-950/30 dark:to-transparent" />
-            
-            <div className="absolute bottom-0 left-0 p-6 w-full">
-              <motion.h1
-                className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight"
-                initial={{ x: -30, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-              >
-                {assignment?.title}
-              </motion.h1>
-              
-              <motion.div 
-                className="flex flex-wrap gap-3 mt-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <span className="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-200 text-sm font-medium">
-                  {assignment?.difficulty}
-                </span>
-                <span className="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-200 text-sm font-medium">
-                  {assignment?.marks} points
-                </span>
-              </motion.div>
+        <div className="relative">
+          <img
+            src={assignment?.thumbnail}
+            alt="Assignment"
+            className="w-full h-72 object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="absolute bottom-6 left-6">
+            <h1 className="text-white text-4xl sm:text-5xl font-bold drop-shadow-xl">
+              {assignment?.title}
+            </h1>
+            <div className="flex gap-4 mt-2">
+              <span className="text-xs bg-purple-600 text-white rounded-full px-3 py-1">
+                {assignment?.difficulty}
+              </span>
+              <span className="text-xs bg-green-600 text-white rounded-full px-3 py-1">
+                {assignment?.marks} Marks
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="p-6 sm:p-8">
-            <motion.p
-              className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              {assignment?.desc}
-            </motion.p>
+        {/* Description */}
+        <div className="p-8">
+          <p className="text-lg text-gray-800 dark:text-gray-300 leading-relaxed">
+            {assignment?.desc}
+          </p>
 
-            {/* Metadata cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-              <motion.div 
-                className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-4 backdrop-blur-sm"
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 mt-10">
+  <InfoCard
+    icon={<FaUserGraduate />}
+    label="Creator"
+    value={assignment?.creatorName === user?.displayName ? "You" : assignment?.creatorName}
+  />
+  <InfoCard
+    icon={<FaChartLine />}
+    label="Marks"
+    value={assignment?.marks}
+  />
+  <InfoCard
+    icon={<FaBookOpen />}
+    label="Difficulty"
+    value={assignment?.difficulty}
+  />
+<InfoCard
+  icon={<FaChartLine />}
+  label="Due Date"
+  value={
+    assignment?.dueDate
+      ? new Date(assignment?.dueDate).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : "N/A"
+  }
+/>
+
+
+</div>
+{/* {console.log(assignment.dueDate)} */}
+
+          {user?.email !== assignment?.creatorEmail && (
+            <div className="mt-12 text-right">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                whileHover={!disable ? { scale: 1.05 } : {}}
+                onClick={() => setShowForm(true)}
+                disabled={disable}
+                className={`px-6 py-3 text-lg font-semibold rounded-xl transition-all shadow-md flex items-center gap-2 ${
+                  disable
+                    ? "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                }`}
               >
-                <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
-                  <FaUserGraduate className="text-xl" />
-                  <span className="font-medium">Creator</span>
-                </div>
-                <p className="mt-2 text-gray-900 dark:text-white">
-                  {assignment?.creatorName === user?.displayName ? 'You' : assignment?.creatorName}
-                </p>
-              </motion.div>
-
-              <motion.div 
-                className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-4 backdrop-blur-sm"
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              >
-                <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
-                  <FaChartLine className="text-xl" />
-                  <span className="font-medium">Marks</span>
-                </div>
-                <p className="mt-2 text-gray-900 dark:text-white">{assignment?.marks}</p>
-              </motion.div>
-
-              <motion.div 
-                className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-4 backdrop-blur-sm"
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              >
-                <div className="flex items-center gap-3 text-purple-600 dark:text-purple-400">
-                  <FaBookOpen className="text-xl" />
-                  <span className="font-medium">Difficulty</span>
-                </div>
-                <p className="mt-2 text-gray-900 dark:text-white">{assignment?.difficulty}</p>
-              </motion.div>
+                {disable ? "Already Submitted" : "Take Assignment"}
+              </motion.button>
             </div>
-
-            {/* Submission button (positioned properly in flow) */}
-            {user?.email !== assignment?.creatorEmail && (
-              <div className="mt-10 flex justify-end">
-                <motion.div
-                  layout
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className={`${isSticky ? "fixed right-6 bottom-3 z-50" : "relative"}`}
-                >
-                  <motion.button
-                    onClick={() => setShowForm(true)}
-                    className={`px-6 py-3 text-lg font-semibold rounded-xl shadow-lg flex items-center gap-2 
-                      ${disable ? 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white'}`}
-                    whileTap={{ scale: 0.97 }}
-                    whileHover={disable ? {} : { scale: 1.04 }}
-                    disabled={disable}
-                    onHoverStart={() => setIsHovering(true)}
-                    onHoverEnd={() => setIsHovering(false)}
-                  >
-                    {disable ? "Already Submitted" : "Take Assignment"}
-                    <motion.span
-                      animate={{ x: isHovering && !disable ? 4 : 0 }}
-                      transition={{ type: "spring", stiffness: 500 }}
-                    >
-                      →
-                    </motion.span>
-                  </motion.button>
-                </motion.div>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </motion.div>
 
-      {/* Modal form */}
+      {/* Modal */}
       <AnimatePresence>
         {showForm && (
-          <motion.div 
-            className="fixed inset-0 bg-black/70 dark:bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="w-full max-w-2xl bg-white dark:bg-gray-800/90 border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl"
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white dark:bg-gray-900 p-6 rounded-2xl max-w-xl w-full shadow-2xl border border-gray-300 dark:border-white/10"
+              initial={{ scale: 0.9, y: 50 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 50 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
-              <div className="p-6 border-b border-gray-200 dark:border-white/10 flex justify-between items-center">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Submit Assignment</h3>
-                <button 
+              <div className="flex justify-between items-center border-b border-gray-300 dark:border-white/10 pb-4 mb-4">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">Submit Assignment</h2>
+                <button
                   onClick={() => setShowForm(false)}
-                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition"
+                  className="text-gray-600 dark:text-white hover:text-red-500"
                 >
-                  <IoClose className="text-2xl" />
+                  <IoClose size={24} />
                 </button>
               </div>
-              
-              <div className="p-6">
-                <SubmitAssignmentForm onSubmit={handleSubmitAssignment} />
-              </div>
+              <SubmitAssignmentForm onSubmit={handleSubmitAssignment} />
             </motion.div>
           </motion.div>
         )}
@@ -284,5 +195,19 @@ const AssignmentDetails = () => {
     </div>
   );
 };
+
+// Info Card Reusable Component
+const InfoCard = ({ icon, label, value }) => (
+  <motion.div
+    whileHover={{ y: -4 }}
+    className="bg-white dark:bg-white/5 p-4 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm"
+  >
+    <div className="flex items-center gap-3 text-indigo-600 dark:text-indigo-300">
+      {icon}
+      <span className="font-medium">{label}</span>
+    </div>
+    <p className="mt-2 text-gray-800 dark:text-white font-semibold">{value}</p>
+  </motion.div>
+);
 
 export default AssignmentDetails;

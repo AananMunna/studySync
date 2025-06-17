@@ -165,7 +165,7 @@ const CreateAssignment = () => {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="Assignment title"
             />
           </div>
@@ -180,7 +180,7 @@ const CreateAssignment = () => {
               required
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
-              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               rows={4}
               placeholder="Detailed assignment description"
             />
@@ -206,7 +206,7 @@ const CreateAssignment = () => {
                 min="1"
                 value={marks}
                 onChange={(e) => setMarks(e.target.value)}
-                className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Total marks"
               />
             </div>
@@ -221,7 +221,7 @@ const CreateAssignment = () => {
                 required
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -241,7 +241,7 @@ const CreateAssignment = () => {
               required
               value={thumbnail}
               onChange={(e) => setThumbnail(e.target.value)}
-              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="https://example.com/image.jpg"
             />
             {thumbnail && (
@@ -270,7 +270,7 @@ const CreateAssignment = () => {
               onChange={(date) => setDueDate(date)}
               minDate={new Date()}
               dateFormat="MMMM d, yyyy"
-              className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+className="w-full px-4 py-3 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               popperClassName="dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             />
           </div>
