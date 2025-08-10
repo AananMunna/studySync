@@ -42,13 +42,14 @@ export default function Footer() {
               to="/submissions"
               className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
-My Submissions            </Link>
+              My Submissions{" "}
+            </Link>
             <Link
               to="/create"
               className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
-Create          </Link>
-            
+              Create{" "}
+            </Link>
           </div>
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

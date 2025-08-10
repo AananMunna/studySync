@@ -12,6 +12,7 @@ import PendingAssignmentsPage from "../pages/PendingAssignmentsPage";
 import AssignmentDetails from "../pages/AssignmentDetails";
 import axios from "axios";
 import UpdateAssignment from "../components/UpdateAssignment";
+import Contact from "../pages/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
         ),
       },
       { path: "login", Component: Login },
+      { path: "contact", Component: Contact },
       { path: "register", Component: Register },
       { path: "*", Component: NotFound },
     ],
