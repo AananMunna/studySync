@@ -32,7 +32,7 @@ console.log(submittedAssignments);
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="min-h-screen px-4 md:px-12 py-10 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-950/50 dark:to-gray-900/50">
+    <div className="min-h-screen  max-w-7xl mx-auto px-4 md:px-12 py-10 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-950/50 dark:to-gray-900/50">
       {/* Floating header with glass effect */}
       <motion.div 
         className="relative z-10 mb-12"
