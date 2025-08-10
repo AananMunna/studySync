@@ -1,5 +1,5 @@
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, Links } from "react-router";
 import { motion } from "framer-motion";
 
 export default function Footer() {
@@ -32,24 +32,18 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Product
             </h3>
-            <a
-              href="#how-it-works"
+            <Link
+              to="/assignments"
               className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
-              How It Works
-            </a>
-            <a
-              href="#features"
+              All Assignments
+            </Link>
+            <Link
+              to="/submissions"
               className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
-              Features
-            </a>
-            <a
-              href="#faq"
-              className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-            >
-              FAQ
-            </a>
+My Submissions            </Link>
+            
           </div>
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
