@@ -43,6 +43,11 @@ export default function Footer() {
               className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
 My Submissions            </Link>
+            <Link
+              to="/create"
+              className="block text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+            >
+Create          </Link>
             
           </div>
           <div className="space-y-3">
