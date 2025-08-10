@@ -11,7 +11,7 @@ const MySubmittedAssignments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = use(AuthContext);
-
+console.log(submittedAssignments);
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_URL}/my-assignment/${user?.email}`,{
         headers: {

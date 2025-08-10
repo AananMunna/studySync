@@ -73,6 +73,26 @@ const AssignmentDetails = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black py-12 px-4">
+      {/* Go Back Button on Right */}
+<div className="max-w-5xl mx-auto mb-4 flex justify-end">
+  <button
+    onClick={() => navigate(-1)}
+    className="inline-flex items-center text-sm sm:text-base gap-2 px-4 py-2 bg-white dark:bg-white/10 text-gray-700 dark:text-gray-100 rounded-full shadow hover:bg-gray-100 dark:hover:bg-white/20 transition-all"
+    title="Go back to previous page"
+  >
+    <span>Go Back</span>
+    <svg
+      className="w-4 h-4 sm:w-5 sm:h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+</div>
+
       {/* Hero */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
