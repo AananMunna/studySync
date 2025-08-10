@@ -13,6 +13,7 @@ import AssignmentDetails from "../pages/AssignmentDetails";
 import axios from "axios";
 import UpdateAssignment from "../components/UpdateAssignment";
 import Contact from "../pages/Contact";
+import HelpCenter from "../pages/HelpCenter";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,7 @@ export const router = createBrowserRouter([
       },
       { path: "login", Component: Login },
       { path: "contact", Component: Contact },
+      { path: "help", Component: HelpCenter },
       { path: "register", Component: Register },
       { path: "*", Component: NotFound },
     ],
