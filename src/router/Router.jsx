@@ -14,6 +14,7 @@ import axios from "axios";
 import UpdateAssignment from "../components/UpdateAssignment";
 import Contact from "../pages/Contact";
 import HelpCenter from "../pages/HelpCenter";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +73,7 @@ export const router = createBrowserRouter([
       { path: "login", Component: Login },
       { path: "contact", Component: Contact },
       { path: "help", Component: HelpCenter },
+      { path: "privacy", Component: PrivacyPolicy },
       { path: "register", Component: Register },
       { path: "*", Component: NotFound },
     ],
